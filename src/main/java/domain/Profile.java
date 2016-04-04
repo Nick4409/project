@@ -1,124 +1,106 @@
 package domain;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 
+
 @Entity
-//Profile of our user
-public class Profile
-{
-	//name of user
+public class Profile {
+	// name of user
 	String name;
-	//email of user
+	// email of user
 	String email;
-	//assessment for attendance
-	int attend;
-	//the number of assessments for attendance;
-	int numOfAttandAssess;
-	//list of sports attended by user
-	ArrayList<Sports> sports;
-	//user's average rating of skills for each kind of sport
-	ArrayList<Integer> skill;
-	//the numbers of assessment for skills
-	ArrayList<Integer> numOfSkillAssess;
-	//the userId is to be used in the Entity's key
-	@Id 
+	//відвідані, невідвідані, та загальна квількість ігор на які користувач записаний
+	int visitedGames;
+	int unvisitedGames;
+	int quantityOFGames;
+	
+	//в першій комірці зберізається кількість лайків для футбола в другій для волейболу і тд по ентіті спортс
+	int[] sportSkill;
+	private ArrayList<String> gamesKeysToAttend;
+	@Id
 	String userId;
-	
-	
-	//constructor
-	public Profile(String userId, String name, String email)
-	{
-		this.userId  = userId;
+
+	// constructor
+	public Profile(String userId, String name, String email) {
+		this.userId = userId;
 		this.name = name;
 		this.email = email;
-		sports = new ArrayList<Sports>();
-		skill = new ArrayList<Integer>();
-		numOfSkillAssess = new ArrayList<Integer>();
-		attend = -1;
-		numOfAttandAssess = 0;
+		this.visitedGames=0;
+		this.unvisitedGames=0;
+		this.quantityOFGames=0;
+		this.sportSkill=new int[5];
+		this.gamesKeysToAttend = new ArrayList<String>();
 	}
 	
-	public void update(String name)
-	{
-		this.name = name;
+	public void update(int[] sportSkill, int visitedGames, int unvisitedGames,int quantityOfGames){
+		this.visitedGames=visitedGames;
+		this.unvisitedGames=unvisitedGames;
+		this.quantityOFGames=quantityOfGames;
+		this.sportSkill=sportSkill.clone();
 	}
 	
-	//set user's new name
-	public void setName(String name)
-	{
+	// set user's new name
+	public void setName(String name) {
 		this.name = name;
 	}
-	//get user's name
-	public String getName()
-	{
+
+	// get user's name
+	public String getName() {
 		return name;
 	}
-	
-	
-	//set user's new email
-	public void setEmail(String email)
-	{
+
+	// set user's new email
+	public void setEmail(String email) {
 		this.email = email;
 	}
-	//get user's email
-	public String getEmail()
-	{
+
+	// get user's email
+	public String getEmail() {
 		return email;
-	}	
-	
-	
-	//get user's id
-	public String getId()
-	{
+	}
+
+	// get user's id
+	public String getId() {
 		return userId;
 	}
-	
-	
-	//Set new sport user visited
-	public void setSport(Sports sport)
-	{
-		sports.add(sport);
+
+	public void addToGamesKeysToAttend(String gameKey){
+		gamesKeysToAttend.add(gameKey);
+		quantityOFGames++;
 	}
 	
-	
-	//Get all sports user visited
-	public ArrayList<Sports> getAllSports()
-	{
-		return sports;
+	public void deleteFromGamesKeysToAttend(String gameKey){
+		gamesKeysToAttend.remove(gameKey);
+		quantityOFGames--;
 	}
 	
-	
-	//Set one skill assessment for certain sport
-	public void setSkill(Sports sport, int assessment)
-	{
-		int index = sports.indexOf(sport);
-		int newRating = (skill.get(index)*numOfSkillAssess.get(index) + assessment)/numOfSkillAssess.get(index)+1;
-		skill.set(index, newRating);
-		numOfSkillAssess.set(index, numOfSkillAssess.get(index)+1);
+	public List<String> getGamesKeysToAttend(){
+		List<String> res = new ArrayList<>();
+		res.addAll(0, gamesKeysToAttend);
+		return res;
 	}
 	
-	
-	//get skill for certain sport
-	public int getSkill(Sports sport)
-	{	
-		return skill.get(sports.indexOf(sport));
+	//
+	public void likeMySkill(Sports sport){
+		sportSkill[sport.ordinal()]++;
 	}
 	
-	
-	//set one attendance assessment
-	public void setAttend(int assessment)
-	{
-		attend = attend*numOfAttandAssess + assessment/numOfAttandAssess+1;
-		numOfAttandAssess++;
+	public int[] getSportSkills() {
+		return sportSkill;
+	}
+	public void setAttendance(){
+		visitedGames++;
 	}
 	
-	
-	//get attendance assessment
-	public int getAttend()
-	{
-		return attend;
+	public void setNonAttendance(){
+		unvisitedGames++;
 	}
+	
+	private Profile() {}
+	
+	
 }

@@ -88,9 +88,14 @@ google.devrel.samples.hello.auth = function() {
 google.devrel.samples.hello.enableButtons = function() {
     document.getElementById('signinButton').onclick = function() {
     google.devrel.samples.hello.auth();
+    gapi.client.endpoints.aveProfile().execute();
   }
   document.getElementById('userInfoButton').onclick = function() {
 	  google.devrel.samples.hello.getUserInfo();
+  }
+  
+  document.getElementById('getUserFromDatastore').onclick = function() {
+	  google.devrel.samples.hello.getMeFromDatastore();
   }
     
 };
@@ -120,7 +125,10 @@ google.devrel.samples.hello.getUserInfo = function() {
 	var request =  gapi.client.endpoints.getMyInfo();
 	request.execute(alertInfo);
 }
-
+google.devrel.samples.hello.getMeFromDatastore = function() {
+	var request =  gapi.client.endpoints.getMeFromDatastore();
+	request.execute(alertInfo);
+}
 function alertInfo (response) {
 	alert(response.message);	
 }

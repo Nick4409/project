@@ -4,11 +4,15 @@ import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.ApiMethod.HttpMethod;
 import com.google.api.server.spi.response.NotFoundException;
+import com.google.api.server.spi.response.UnauthorizedException;
 import com.google.appengine.api.users.User;
+import com.googlecode.objectify.Key;
 
-import java.util.ArrayList;
+import domain.Profile;
+import form.ProfileForm;
 
-import javax.inject.Named;
+import static service.OfyService.ofy;
+
 
 /**
  * Defines v1 of a helloworld API, which provides simple "greeting" methods.
@@ -21,7 +25,7 @@ import javax.inject.Named;
     audiences = {Constants.ANDROID_AUDIENCE}
 )
 public class Endpoints {
-	 
+	
 	@ApiMethod(name = "getMyInfo", path = "getMyInfo", httpMethod=HttpMethod.GET)
 	  public HelloGreeting getMyInfo(User user) {
 		String str="";
@@ -31,4 +35,74 @@ public class Endpoints {
 	    HelloGreeting response = new HelloGreeting(str);
 	    return response;
 	  }
+	
+	@ApiMethod(name = "getMeFromDatastore", path = "getMeFromDatastore", httpMethod=HttpMethod.GET)
+	  public HelloGreeting getMeFromDatastore(User user) throws UnauthorizedException {
+		if (user == null) {
+			throw new UnauthorizedException("Authorization required");
+		}
+		String userId = user.getUserId();
+		Key key = Key.create(Profile.class, userId);
+		Profile profile = (Profile) ofy().load().key(key).now();
+		String str="";
+		if(profile!=null)
+			str += "FROM DATASTORE"+"\n"+"User: "+profile.getName()+"\n"+"Email: "+profile.getEmail()+"\n"+"ID: "+profile.getId();
+		else str+="Nothing to show";
+	    HelloGreeting response = new HelloGreeting(str);
+	    return response;
+	  }
+	
+	private static String extractDefaultDisplayNameFromEmail(String email) {
+		return email == null ? null : email.substring(0, email.indexOf("@"));
+	}
+
+	@ApiMethod(name = "saveProfile", path = "saveProfile", httpMethod = HttpMethod.POST)
+	public Profile saveProfile(User user, ProfileForm profileForm) throws UnauthorizedException {
+
+		String userId = null;
+		String email = null;
+		String name;
+		
+		if (user == null) {
+			throw new UnauthorizedException("Authorization required");
+		}
+
+		if (user.getEmail() != null) {
+			email = user.getEmail();
+		}
+
+		if (user.getUserId() != null) {
+			userId = user.getUserId();
+		}
+
+		if (profileForm.getName() != null) {
+			name = profileForm.getName();
+		} else {
+			name = extractDefaultDisplayNameFromEmail(email);
+		}
+
+		Profile profile = getProfile(user);
+		if (profile == null) {
+			profile = new Profile(userId, name, email);
+		} else {
+			int quantityOfGames=profileForm.quantityOfGames();
+			int visitedGames=profileForm.getVisitedGames();
+			int unvisitedGames=profileForm.getUnvisitedGames();
+			int[] sportSkill = profileForm.getSportSkill();
+			profile.update(sportSkill, visitedGames, unvisitedGames, quantityOfGames);
+		}
+		ofy().save().entity(profile).now();
+		return profile;
+	}
+
+	@ApiMethod(name = "getProfile", path = "profile", httpMethod = HttpMethod.GET)
+	public Profile getProfile(final User user) throws UnauthorizedException {
+		if (user == null) {
+			throw new UnauthorizedException("Authorization required");
+		}
+		String userId = user.getUserId();
+		Key key = Key.create(Profile.class, userId);
+		Profile profile = (Profile) ofy().load().key(key).now();
+		return profile;
+	}
 }
