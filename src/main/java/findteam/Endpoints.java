@@ -85,7 +85,7 @@ public class Endpoints {
 		if (profile == null) {
 			profile = new Profile(userId, name, email);
 		} else {
-			int quantityOfGames=profileForm.quantityOfGames();
+			int quantityOfGames=profileForm.getQuantityOfGames();
 			int visitedGames=profileForm.getVisitedGames();
 			int unvisitedGames=profileForm.getUnvisitedGames();
 			int[] sportSkill = profileForm.getSportSkill();

@@ -5,6 +5,7 @@ public class ProfileForm {
 	private int visitedGames;
 	private int unvisitedGames;
 	private int quantityOFGames;
+	
 	private int [] sportSkill=new int[5];
 	//Ця штука просто має бути
 	private ProfileForm () {}
@@ -25,7 +26,15 @@ public class ProfileForm {
 		return unvisitedGames;
 	}
 	
-	public int quantityOfGames(){
+	public int getQuantityOfGames(){
+		return quantityOFGames;
+	}
+	
+	public int getLatitude(){
+		return unvisitedGames;
+	}
+	
+	public int getLongitude(){
 		return quantityOFGames;
 	}
 	
