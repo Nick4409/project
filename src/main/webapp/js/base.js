@@ -129,9 +129,9 @@ google.devrel.samples.hello.init = function(apiRoot) {
 createGame = function() {
 	var name =document.getElementById("name").value;
 	var description =document.getElementById("description").value;
-	var date =document.getElementById("date").value;
+	//var date =document.getElementById("date").value;
 	var attendees =document.getElementById("attendees").value;
-	var request =  gapi.client.endpoints.createGame({'name': name, 'description':description, 'date':date, 'maxAttendees':attendees,
+	var request =  gapi.client.endpoints.createGame({'name': name, 'description':description, 'maxAttendees':attendees,
 		'seatsAvailable':attendees, 'latitude':40, 'longitude':40, 'cancelable':true});
 	request.execute(alertInfo);
 }
@@ -153,8 +153,8 @@ getGamesQueryButton = function(){
 	);
 }
 print = function(game) {
-	  var node = document.createElement("p");                 
-	  var textnode = document.createTextNode("Game name: "+game.name+"/n"+"Game description: "+game.description);
+	  var node = document.createElement("div");                 
+	  var textnode = document.createTextNode("Game name: "+game.name+" "+"Game description: "+game.description);
 	  node.appendChild(textnode);                             
 	  document.getElementById("gameNode").appendChild(node);
 };
