@@ -4,29 +4,28 @@ import java.util.Date;
 
 public class GameForm {
 	
-    private String name;
+    public String name;
 
-    private String description;
+    public String description;
 
-    private Date startDate;
-    private Date endDate;
+    public Date date;
+  
 
-    private int maxAttendees;
-    private int seatsAvailable;
+    public int maxAttendees;
+    public int seatsAvailable;
     
-    private double latitude;
-    private double longitude;
+    public double latitude;
+    public double longitude;
     
-    private boolean cancelable;
+    public boolean cancelable;
     
     private GameForm() {}
 	
-    public GameForm(String name, String description, Date startDate, Date endDate,
+    public GameForm(String name, String description, Date date, 
     			int maxAttendees, int seatsAvailable, double latitude, double longitude, boolean cancelable) {
 		this.name=name;
 		this.description=description;
-		this.startDate=startDate;
-		this.endDate=endDate;
+		this.date=date;
 		this.maxAttendees=maxAttendees;
 		this.seatsAvailable=seatsAvailable;
 		this.latitude=latitude;
@@ -43,11 +42,7 @@ public class GameForm {
     }
 
     public Date getStartDate() {
-        return startDate;
-    }
-
-    public Date getEndDate() {
-        return endDate;
+        return date;
     }
 
     public int getMaxAttendees() {

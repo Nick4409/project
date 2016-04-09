@@ -7,21 +7,22 @@ import com.google.api.server.spi.config.AnnotationBoolean;
 import com.google.api.server.spi.config.ApiResourceProperty;
 import com.google.appengine.api.search.checkers.Preconditions;
 import com.googlecode.objectify.Key;
+import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Index;
 import com.googlecode.objectify.annotation.Parent;
 
 import form.GameForm;
 import static service.OfyService.ofy;
-
+@Entity
 public class Game {
 	@Id
     private long id;
     
 	@Index
-    private String name;
+    public String name;
     
-    private String description;
+    public String description;
     
     @Parent
     @ApiResourceProperty(ignored = AnnotationBoolean.TRUE)
@@ -30,8 +31,8 @@ public class Game {
     @ApiResourceProperty(ignored = AnnotationBoolean.TRUE)
     private String organizerUserId;
 
-    private Date startDate;
-    private Date endDate;
+    private Date date;
+    
 
     private double latitude;
     private double longitude;
@@ -62,13 +63,11 @@ public class Game {
         this.description = gameForm.getDescription();
         
         Date startDate = gameForm.getStartDate();
-        this.startDate = startDate == null ? null : new Date(startDate.getTime());
-        Date endDate = gameForm.getEndDate();
-        this.endDate = endDate == null ? null : new Date(endDate.getTime());
-        if (this.startDate != null) {
+        this.date = startDate == null ? null : new Date(startDate.getTime());
+       if (this.date != null) {
             // Getting the starting month for a composite query.
             Calendar calendar = Calendar.getInstance();
-            calendar.setTime(this.startDate);
+            calendar.setTime(this.date);
             // Calendar.MONTH is zero based, so adding 1.
             this.month = calendar.get(calendar.MONTH) + 1;
         }
@@ -122,14 +121,10 @@ public class Game {
    
 
     public Date getStartDate() {
-        return startDate == null ? null : new Date(startDate.getTime());
+        return date == null ? null : new Date(date.getTime());
     }
     
     
-    public Date getEndDate() {
-        return endDate == null ? null : new Date(endDate.getTime());
-    }
-
     public int getMonth() {
         return month;
     }
@@ -142,4 +137,11 @@ public class Game {
         return seatsAvailable;
     }
     
+    public String getName() {
+        return name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
 }

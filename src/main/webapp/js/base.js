@@ -97,7 +97,12 @@ google.devrel.samples.hello.enableButtons = function() {
   document.getElementById('getUserFromDatastore').onclick = function() {
 	  google.devrel.samples.hello.getMeFromDatastore();
   }
-    
+  document.getElementById('sendFormButton').onclick = function() {
+	  createGame();
+  }
+  document.getElementById('getGamesQueryButton').onclick = function() {
+	 getGamesQueryButton();
+  }  
 };
 
 /**
@@ -119,6 +124,39 @@ google.devrel.samples.hello.init = function(apiRoot) {
   apisToLoad = 2; // must match number of calls to gapi.client.load()
   gapi.client.load('endpoints', 'v1', callback, apiRoot);
   gapi.client.load('oauth2', 'v2', callback);
+};
+
+createGame = function() {
+	var name =document.getElementById("name").value;
+	var description =document.getElementById("description").value;
+	var date =document.getElementById("date").value;
+	var attendees =document.getElementById("attendees").value;
+	var request =  gapi.client.endpoints.createGame({'name': name, 'description':description, 'date':date, 'maxAttendees':attendees,
+		'seatsAvailable':attendees, 'latitude':40, 'longitude':40, 'cancelable':true});
+	request.execute(alertInfo);
+}
+
+getGamesQueryButton = function(){
+	var request = gapi.client.endpoints.getAllGames().execute(
+		function(resp) {
+			if (!resp.code) {
+				resp.items = resp.items || [];
+		        for (var i = 0; i < resp.items.length; i++) {
+		        	print(resp.items[i]);
+		        }
+		        alert("END! Items: "+ resp.items.length);
+		    }
+			else{
+				alert("Smth went wrong! resp.code: "+resp.code);
+			}
+		}
+	);
+}
+print = function(game) {
+	  var node = document.createElement("p");                 
+	  var textnode = document.createTextNode("Game name: "+game.name+"/n"+"Game description: "+game.description);
+	  node.appendChild(textnode);                             
+	  document.getElementById("gameNode").appendChild(node);
 };
 
 google.devrel.samples.hello.getUserInfo = function() {

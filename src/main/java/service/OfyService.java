@@ -1,4 +1,5 @@
 package service;
+import domain.Game;
 import domain.Profile;
 import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.ObjectifyFactory;
@@ -9,6 +10,7 @@ public class OfyService
 	static 
 	{
         factory().register(Profile.class);
+        factory().register(Game.class);
     }
 	
 	public static Objectify ofy() 
