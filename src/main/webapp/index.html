@@ -1,18 +1,31 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <title>Changed!</title>
-    <script type="text/javascript" src="/js/base.js"></script>
-    <link type="text/css" rel="stylesheet" href="/bootstrap/css/bootstrap.css">
-    <link type="text/css" rel="stylesheet" href="/bootstrap/css/bootstrap-responsive.css">
-    <link type="text/css" rel="stylesheet" href="/css/style.css">
-</head>
-<body>
 
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link type="text/css" rel="stylesheet" href="css/style.css">
+
+    <!-- Custom Fonts -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" type="text/css">
+    <link href="http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css">
+    <link href="http://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+    <link href='https://fonts.googleapis.com/css?family=Russo+One&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Comfortaa|Playfair+Display+SC&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
+
+    <!--Calendar css-->
+    <link href="https://cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/d004434a5ff76e7b97c8b07c01f34ca69e635d97/build/css/bootstrap-datetimepicker.css" rel="stylesheet">
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/base.js"></script>
+
+</head>
+
+<body>
 	<a href="javascript:void(0);" class="btn" id="signinButton">Sign in</a>
 	<a href="javascript:void(0);" class="btn" id="userInfoButton">Show user info</a>
 	<a href="javascript:void(0);" class="btn" id="getUserFromDatastore">Get user from datastore</a>
-      
 <div class="container">
      <script type="text/javascript">
         function init() {
@@ -32,9 +45,86 @@
   	<input type="text" id="attendees"><br>
   	<a href="javascript:void(0);" class="btn" id="sendFormButton">Send form</a>
 </form>
-<a href="javascript:void(0);" class="btn" id="getGamesQueryButton">Get games query</a>
-<div id="gameNode">
 
-</div>
+<div id="gameNode"></div>
+    <!--Кнопка додавання події-->
+    <a href="#createForm" id="wrapper">
+        <div class="button button-floating"></div>
+        <div class="button-floating-shadow"></div>
+    </a>
+    <!--Модальне вікно створення події-->
+    <a href="#window" class="overlay" id="createForm"></a>
+    <div class="popup">
+        <a class="close" title="Закрити" href="#close"></a>
+        <div class="col-sm-12" style="text-align: center;padding:10px;">
+        <text class="addEvent">Додайте подію</text></div>
+        <div class="container">
+            <div class="row">
+                <div class='col-sm-4'>
+                <p>Назва події:<input name="name" class="form-control" type="text" required><span></span></p>
+                <p>Опис події:<textarea name="description" class="form-control" colls="50" rows="7" required></textarea></p>
+                <p>Вид спорту: <select name="sport" class="form-control">
+                    <option value="Футбол">Футбол</option>
+                    <option value="Баскетбол">Баскетбол</option>
+                    <option value="Волейбол">Волейбол</option>
+                </select></p>
+                <p>Кількість учасників:<input name="attendees" class="form-control"></p>
+                <p>Дата:
+                    <div class="form-group">
+                         <div class='input-group date' id='datetimepicker6'>
+                            <input type='text' class="form-control" />
+                            <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class='input-group date' id='datetimepicker7'>
+                            <input type='text' class="form-control" />
+                            <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
+                        </div>
+                    </div></p>
+                </div>
+                </div>
+            </div>
+            <script type="text/javascript">
+                $(function () {
+                    $('#datetimepicker6').datetimepicker();
+                    $('#datetimepicker7').datetimepicker({
+                        useCurrent: false, //Important! See issue #1075
+                        autoclose: true
+                    });
+                    $("#datetimepicker6").on("dp.change", function (e) {
+                        $('#datetimepicker7').data("DateTimePicker").minDate(e.date);
+                    });
+                    $("#datetimepicker7").on("dp.change", function (e) {
+                        $('#datetimepicker6').data("DateTimePicker").maxDate(e.date);
+                    });
+                });
+                </script>
+        <div class="col-sm-12" style="text-align:right">
+        <a href="javascript:void(0);" id="getGamesQueryButton" class="btn btn-default btn-lg"> Створити</a>
+        </div>
+        </div>
+
+    </div>
+
+
+
+    <!-- jQuery -->
+    <script src="js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+    <!--Calendar essentials-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.12.0/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/3.1.0/js/bootstrap-datetimepicker.min.js"></script>
+
+
+
 </body>
 </html>
