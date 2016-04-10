@@ -15,10 +15,9 @@
 
     <!--Calendar css-->
     <link href="https://cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/d004434a5ff76e7b97c8b07c01f34ca69e635d97/build/css/bootstrap-datetimepicker.css" rel="stylesheet">
-
+    <script src="js/script.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-    <script type="text/javascript" src="/js/base.js"></script>
 
 </head>
 
@@ -26,6 +25,9 @@
 	<a href="javascript:void(0);" class="btn" id="signinButton">Sign in</a>
 	<a href="javascript:void(0);" class="btn" id="userInfoButton">Show user info</a>
 	<a href="javascript:void(0);" class="btn" id="getUserFromDatastore">Get user from datastore</a>
+
+
+
 <div class="container">
      <script type="text/javascript">
         function init() {
@@ -43,10 +45,13 @@
   	<input type="text" id="date"><br>
   	Attendees:<br>
   	<input type="text" id="attendees"><br>
-  	<a href="javascript:void(0);" class="btn" id="sendFormButton">Send form</a>
+    <a href="javascript:void(0);" id="getGamesQueryButton" class="btn btn-default btn-lg">Показати всі</a>
 </form>
 
 <div id="gameNode"></div>
+
+    <!--Створення події-->
+
     <!--Кнопка додавання події-->
     <a href="#createForm" id="wrapper">
         <div class="button button-floating"></div>
@@ -61,15 +66,15 @@
         <div class="container">
             <div class="row">
                 <div class='col-sm-4'>
-                <p>Назва події:<input name="name" class="form-control" type="text" required><span></span></p>
-                <p>Опис події:<textarea name="description" class="form-control" colls="50" rows="7" required></textarea></p>
+                <p>Назва:<input name="name" class="form-control" type="text" required><span></span></p>
+                <p>Опис:<textarea name="description" class="form-control" colls="50" rows="7" required></textarea></p>
                 <p>Вид спорту: <select name="sport" class="form-control">
-                    <option value="Футбол">Футбол</option>
-                    <option value="Баскетбол">Баскетбол</option>
-                    <option value="Волейбол">Волейбол</option>
-                </select></p>
+                        <option value="Футбол">Футбол</option>
+                        <option value="Баскетбол">Баскетбол</option>
+                        <option value="Волейбол">Волейбол</option>
+                    </select></p>
                 <p>Кількість учасників:<input name="attendees" class="form-control"></p>
-                <p>Дата:
+                <p>Дата та час початку та закінчення:
                     <div class="form-group">
                          <div class='input-group date' id='datetimepicker6'>
                             <input type='text' class="form-control" />
@@ -88,6 +93,30 @@
                         </div>
                     </div></p>
                 </div>
+
+                <!--   Google maps   -->
+                <div class="col-sm-4" style="align:right">
+                    <p>Місце проведення:</p>
+                    <div class="floating-panel">
+                        <input id="address" type="textbox" class="form-control" value="Kyiv" name="adress">
+                    </div>
+                </div>
+                    <div class="col-sm-1">
+                        <div class="floating-panel">
+                            <input id="submit" type="button" class="btn btn-default btn-sm" value="Знайти">
+                        </div>
+                        </div>
+                <div class="col-sm-5" style="align:right">
+                    <div class="map-responsive">
+                    <div id="googleMap" class="map-canvas"></div>
+                    <div id="pip-pano" class="map-canvas"></div>
+
+                    <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyB2ria8CU7GcJZRdZD0MeZOk5eZ0vTWFiw"></script>
+                    <script src="js/script.js"></script>
+                        </div>
+                    <!-- -->
+
+                    </div>
                 </div>
             </div>
             <script type="text/javascript">
@@ -106,7 +135,8 @@
                 });
                 </script>
         <div class="col-sm-12" style="text-align:right">
-        <a href="javascript:void(0);" id="getGamesQueryButton" class="btn btn-default btn-lg"> Створити</a>
+
+            <a href="javascript:void(0);" class="btn" id="sendFormButton" class="btn btn-default btn-lg">Створити</a>
         </div>
         </div>
 
