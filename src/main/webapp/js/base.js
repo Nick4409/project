@@ -24,7 +24,7 @@ google.devrel.samples.hello = google.devrel.samples.hello || {};
  * @type {string}
  */
 google.devrel.samples.hello.CLIENT_ID =
-    '1001315827289-em9jhbuphg99hnk98un4heo3ffhdi83m.apps.googleusercontent.com';
+    '723897228351-f2qvkplmt4ljdcpmchceju920f9j1kmp.apps.googleusercontent.com';
 
 /**
  * Scopes used by the application.
