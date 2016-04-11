@@ -141,7 +141,13 @@ public class Endpoints {
 		return result;
 	}
 	
-	
+	@ApiMethod(name = "getFilteredGames", path = "getFilteredGames", httpMethod = HttpMethod.POST)
+	public List getFilteredGames(String sport) {
+		List<Game> result =ofy().load().type(Game.class)
+				//.filter()
+				.list();
+		return result;
+	}
 	
 
 }
