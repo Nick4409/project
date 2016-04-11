@@ -129,10 +129,13 @@ google.devrel.samples.hello.init = function(apiRoot) {
 createGame = function() {
 	var name =document.getElementById("name").value;
 	var description =document.getElementById("description").value;
-	//var date =document.getElementById("date").value;
+    var sport=document.getElementById("sport").value;
+	var startDate =document.getElementById("datetimepickerstart").value;
+    var endDate =document.getElementById("datetimepickerend").value;
 	var attendees =document.getElementById("attendees").value;
+
 	var request =  gapi.client.endpoints.createGame({'name': name, 'description':description, 'maxAttendees':attendees,
-		'seatsAvailable':attendees, 'latitude':40, 'longitude':40, 'cancelable':true});
+		'seatsAvailable':attendees, 'startDate':startDate, 'endDate':endDate, 'latitude':0, 'longitude':0, 'sport':sport});
 	request.execute(alertInfo);
 }
 
