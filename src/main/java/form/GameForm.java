@@ -2,17 +2,13 @@ package form;
 
 import java.util.Date;
 
-import com.googlecode.objectify.annotation.Index;
-
 public class GameForm {
 	
     public String name;
 
     public String description;
 
-    String startDateStrRepr;
-    String endDateStrRepr;
-    
+    public Date date;
   
 
     public int maxAttendees;
@@ -25,12 +21,11 @@ public class GameForm {
     
     private GameForm() {}
 	
-    public GameForm(String name, String description, String startDate, String endDate,
+    public GameForm(String name, String description, Date date, 
     			int maxAttendees, int seatsAvailable, double latitude, double longitude, boolean cancelable) {
 		this.name=name;
 		this.description=description;
-		this.startDateStrRepr=startDateStrRepr;
-		this.endDateStrRepr=endDateStrRepr;
+		this.date=date;
 		this.maxAttendees=maxAttendees;
 		this.seatsAvailable=seatsAvailable;
 		this.latitude=latitude;
@@ -44,6 +39,10 @@ public class GameForm {
 
     public String getDescription() {
         return description;
+    }
+
+    public Date getStartDate() {
+        return date;
     }
 
     public int getMaxAttendees() {
@@ -65,18 +64,5 @@ public class GameForm {
     public boolean getCancelable() {
         return cancelable;
     }
-    
-    public String getStartDate() {
-        return startDateStrRepr;
-    }
-    
-    public String getEndDate() {
-        return endDateStrRepr;
-    }
-    
-    private void executeDate(String date){
-    //TODO	
-    }
-    
-    
+
 }

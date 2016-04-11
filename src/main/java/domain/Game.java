@@ -20,13 +20,9 @@ public class Game {
     private long id;
     
 	@Index
-    String name;
-    	
-    String description;
+    public String name;
     
-    @Index
-    String sport;
-    
+    public String description;
     
     @Parent
     @ApiResourceProperty(ignored = AnnotationBoolean.TRUE)
@@ -34,19 +30,15 @@ public class Game {
     
     @ApiResourceProperty(ignored = AnnotationBoolean.TRUE)
     private String organizerUserId;
+
+    private Date date;
     
-    @Index
-    int startDate;
-    @Index
-    int endDate;
-    
-    String startDateStrRepr;
-    String endDateStrRepr;
 
     private double latitude;
     private double longitude;
     
-    
+    @Index
+    private int month;
 
     @Index
     private int maxAttendees;
@@ -55,7 +47,6 @@ public class Game {
     private int seatsAvailable;
     
     boolean cancelable;
-    
     //необхідність
     private Game() {}
     
@@ -70,11 +61,16 @@ public class Game {
     public void updateWithGameForm(GameForm gameForm){
     	this.name = gameForm.getName();
         this.description = gameForm.getDescription();
-        this.startDateStrRepr=gameForm.getStartDate();
-        this.endDateStrRepr=gameForm.getEndDate();
         
-        //TODO робота з часом
-        
+        Date startDate = gameForm.getStartDate();
+        this.date = startDate == null ? null : new Date(startDate.getTime());
+       if (this.date != null) {
+            // Getting the starting month for a composite query.
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(this.date);
+            // Calendar.MONTH is zero based, so adding 1.
+            this.month = calendar.get(calendar.MONTH) + 1;
+        }
         // Check maxAttendees value against the number of already allocated seats.
         int seatsAllocated = maxAttendees - seatsAvailable;
         if (gameForm.getMaxAttendees() < seatsAllocated) {
@@ -124,6 +120,14 @@ public class Game {
     }
    
 
+    public Date getStartDate() {
+        return date == null ? null : new Date(date.getTime());
+    }
+    
+    
+    public int getMonth() {
+        return month;
+    }
 
     public int getMaxAttendees() {
         return maxAttendees;
