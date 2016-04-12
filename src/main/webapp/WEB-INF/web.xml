@@ -4,7 +4,7 @@
         <servlet-class>com.google.api.server.spi.SystemServiceServlet</servlet-class>
         <init-param>
             <param-name>services</param-name>
-            <param-value>findteam.Endpoints</param-value>
+            <param-value>findteam.Greetings</param-value>
         </init-param>
     </servlet>
     <servlet-mapping>
@@ -14,12 +14,4 @@
     <welcome-file-list>
         <welcome-file>index.html</welcome-file>
     </welcome-file-list>
-    <servlet>
-        <servlet-name>SendGameCreatedServlet</servlet-name>
-        <servlet-class>servlet.SendGameCreatedServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>SendGameCreatedServlet</servlet-name>
-        <url-pattern>/game_created_email</url-pattern>
-    </servlet-mapping>
 </web-app>

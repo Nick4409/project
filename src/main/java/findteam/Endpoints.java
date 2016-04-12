@@ -7,7 +7,6 @@ import com.google.api.server.spi.response.NotFoundException;
 import com.google.api.server.spi.response.UnauthorizedException;
 import com.google.appengine.api.users.User;
 import com.googlecode.objectify.Key;
-import com.googlecode.objectify.Work;
 
 import domain.Game;
 import domain.Profile;
@@ -18,9 +17,7 @@ import static service.OfyService.ofy;
 
 import java.util.ArrayList;
 import java.util.List;
-import com.google.appengine.api.taskqueue.Queue;
-import com.google.appengine.api.taskqueue.QueueFactory;
-import com.google.appengine.api.taskqueue.TaskOptions;
+
 /**
  * Defines v1 of a helloworld API, which provides simple "greeting" methods.
  */
@@ -111,15 +108,6 @@ public class Endpoints {
 		Profile profile = (Profile) ofy().load().key(key).now();
 		return profile;
 	}
-	
-	private static Profile getProfileFromUser(User user) {
-		Profile profile = ofy().load().key(Key.create(Profile.class, user.getUserId())).now();
-		if (profile == null) {
-			String email = user.getEmail();
-			profile = new Profile(user.getUserId(), extractDefaultDisplayNameFromEmail(email), email);
-		}
-		return profile;
-	}
 
 	@ApiMethod(name = "createGame", path = "createGame", httpMethod = HttpMethod.POST)
 	public Game createGame(final User user, final GameForm gameForm) throws UnauthorizedException {
@@ -127,30 +115,23 @@ public class Endpoints {
 			throw new UnauthorizedException("Authorization required");
 		}
 
-		final String userId = user.getUserId();
+		String userId = user.getUserId();
 		Key<Profile> profileKey = Key.create(Profile.class, userId);
 
 		final Key<Game> gameKey = ofy().factory().allocateId(profileKey, Game.class);
 
 		final long gameId = gameKey.getId();
 
-		
-		final Queue queue = QueueFactory.getDefaultQueue();
-		Game game = ofy().transact(new Work<Game>() {
-			@Override
-			public Game run() {
-				
-				Profile profile = getProfileFromUser(user);
-			
-				Game game = new Game(gameId, userId, gameForm);
-				
-				ofy().save().entities(profile, game);
-				
-				queue.add(ofy().getTransaction(), TaskOptions.Builder.withUrl("/game_created_email")
-						.param("email", profile.getEmail()).param("gameInfo", game.toString()));
-				return game;
-			}
-		});
+		Profile profile = getProfile(user);
+		if (profile == null) {
+			String email = user.getEmail();
+			profile = new Profile(user.getUserId(), extractDefaultDisplayNameFromEmail(email), email);
+
+		}
+
+		Game game = new Game(gameId, userId, gameForm);
+		ofy().save().entities(profile, game);
+		// тут робиш відправку мейла
 		return game;
 	}
 
@@ -160,13 +141,7 @@ public class Endpoints {
 		return result;
 	}
 	
-	@ApiMethod(name = "getFilteredGames", path = "getFilteredGames", httpMethod = HttpMethod.POST)
-	public List getFilteredGames(String sport) {
-		List<Game> result = ofy().load().type(Game.class)
-				//.filter()
-				.list();
-		return result;
-	}
+	
 	
 
 }
