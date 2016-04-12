@@ -5,8 +5,12 @@ import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.ApiMethod.HttpMethod;
 import com.google.api.server.spi.response.NotFoundException;
 import com.google.api.server.spi.response.UnauthorizedException;
+import com.google.appengine.api.taskqueue.Queue;
+import com.google.appengine.api.taskqueue.QueueFactory;
+import com.google.appengine.api.taskqueue.TaskOptions;
 import com.google.appengine.api.users.User;
 import com.googlecode.objectify.Key;
+import com.googlecode.objectify.Work;
 
 import domain.Game;
 import domain.Profile;
@@ -109,31 +113,49 @@ public class Endpoints {
 		return profile;
 	}
 
+	private static Profile getProfileFromUser(User user) {
+		Profile profile = ofy().load().key(Key.create(Profile.class, user.getUserId())).now();
+		if (profile == null) {
+			String email = user.getEmail();
+			profile = new Profile(user.getUserId(), extractDefaultDisplayNameFromEmail(email), email);
+		}
+		return profile;
+	}
+
 	@ApiMethod(name = "createGame", path = "createGame", httpMethod = HttpMethod.POST)
 	public Game createGame(final User user, final GameForm gameForm) throws UnauthorizedException {
 		if (user == null) {
 			throw new UnauthorizedException("Authorization required");
 		}
 
-		String userId = user.getUserId();
+		final String userId = user.getUserId();
 		Key<Profile> profileKey = Key.create(Profile.class, userId);
 
 		final Key<Game> gameKey = ofy().factory().allocateId(profileKey, Game.class);
 
 		final long gameId = gameKey.getId();
 
-		Profile profile = getProfile(user);
-		if (profile == null) {
-			String email = user.getEmail();
-			profile = new Profile(user.getUserId(), extractDefaultDisplayNameFromEmail(email), email);
-
-		}
-
-		Game game = new Game(gameId, userId, gameForm);
-		ofy().save().entities(profile, game);
-		// тут робиш відправку мейла
+		
+		final Queue queue = QueueFactory.getDefaultQueue();
+		Game game = ofy().transact(new Work<Game>() {
+			@Override
+			public Game run() {
+				
+				Profile profile = getProfileFromUser(user);
+			
+				Game game = new Game(gameId, userId, gameForm);
+				
+				ofy().save().entities(profile, game);
+				
+				queue.add(ofy().getTransaction(), TaskOptions.Builder.withUrl("/game_created_email")
+						.param("email", profile.getEmail()).param("gameInfo", game.toString()));
+				return game;
+			}
+		});
 		return game;
 	}
+	
+	
 
 	@ApiMethod(name = "getAllGames", path = "getAllGames", httpMethod = HttpMethod.POST)
 	public List queryGames() {

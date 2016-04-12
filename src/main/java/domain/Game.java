@@ -144,5 +144,19 @@ public class Game {
     public String getDescription() {
         return description;
     }
-    
+ 
+    @Override
+    public String toString() {
+        StringBuilder stringBuilder = new StringBuilder("Id: " + id + "\n")
+                .append("Name: ").append(name).append("\n");
+        
+        if (description != null) {            
+            stringBuilder.append("Description").append(description).append("\n");
+        }
+        if (date != null) {
+            stringBuilder.append("Start date: ").append(date.toString()).append("\n");
+        }
+        stringBuilder.append("Max attendees: ").append(maxAttendees).append("\n");
+        return stringBuilder.toString();
+    }
 }
