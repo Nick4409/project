@@ -14,4 +14,12 @@
     <welcome-file-list>
         <welcome-file>index.html</welcome-file>
     </welcome-file-list>
+    <servlet>
+        <servlet-name>SendGameCreatedServlet</servlet-name>
+        <servlet-class>servlet.SendGameCreatedServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>SendGameCreatedServlet</servlet-name>
+        <url-pattern>/game_created_email</url-pattern>
+    </servlet-mapping>
 </web-app>

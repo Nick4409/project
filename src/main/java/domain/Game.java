@@ -140,4 +140,24 @@ public class Game {
     public String getDescription() {
         return description;
     }
+    
+    @Override
+    public String toString() {
+        StringBuilder stringBuilder = new StringBuilder("Id: " + id + "\n")
+                .append("Name: ").append(name).append("\n");
+        if (sport != null) {
+            stringBuilder.append("Sport: ").append(sport).append("\n");
+        }
+        if (description != null) {            
+            stringBuilder.append("Description").append(description).append("\n");
+        }
+        if (startDateStrRepr != null) {
+            stringBuilder.append("StartDate: ").append(startDateStrRepr).append("\n");
+        }
+        if (endDateStrRepr != null) {
+            stringBuilder.append("EndDate: ").append(endDateStrRepr).append("\n");
+        }
+        stringBuilder.append("Max Attendees: ").append(maxAttendees).append("\n");
+        return stringBuilder.toString();
+    }
 }
