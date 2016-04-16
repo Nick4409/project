@@ -159,7 +159,9 @@ public class Endpoints {
 
 	@ApiMethod(name = "getAllGames", path = "getAllGames", httpMethod = HttpMethod.POST)
 	public List queryGames() {
-		List<Game> result =ofy().load().type(Game.class).list();
+		List<Game> result =ofy().load().type(Game.class)
+				
+				.list();
 		return result;
 	}
 	

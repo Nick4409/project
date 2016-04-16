@@ -30,23 +30,26 @@ public class Game {
     
     @ApiResourceProperty(ignored = AnnotationBoolean.TRUE)
     private String organizerUserId;
-
-    private Date date;
-    
-
-    private double latitude;
-    private double longitude;
-    
     @Index
-    private int month;
-
+    private long startDate;
+    public String startDateStr;
     @Index
-    private int maxAttendees;
-
-    @Index
-    private int seatsAvailable;
+    private long endDate;
+    public String endDateStr;
     
-    boolean cancelable;
+    public double latitude;
+    public double longitude;
+    
+    public String sport;
+
+    @Index
+    public int maxAttendees;
+
+    @Index
+    public int seatsAvailable;
+    
+    
+    private boolean cancelable;
     //необхідність
     private Game() {}
     
@@ -61,17 +64,17 @@ public class Game {
     public void updateWithGameForm(GameForm gameForm){
     	this.name = gameForm.getName();
         this.description = gameForm.getDescription();
-        
-        Date startDate = gameForm.getStartDate();
-        this.date = startDate == null ? null : new Date(startDate.getTime());
-       if (this.date != null) {
-            // Getting the starting month for a composite query.
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTime(this.date);
-            // Calendar.MONTH is zero based, so adding 1.
-            this.month = calendar.get(calendar.MONTH) + 1;
+        this.sport=gameForm.sport;
+        startDateStr = gameForm.getStartDateStr();
+        endDateStr = gameForm.getEndDateStr();
+        if(gameForm.endDate==0||gameForm.startDate==0){
+        	endDate=gameForm.createDate(endDateStr);
+        	startDate=gameForm.createDate(startDateStr);
         }
-        // Check maxAttendees value against the number of already allocated seats.
+        else{
+        	startDate=gameForm.startDate;
+        	endDate=gameForm.endDate;
+        }
         int seatsAllocated = maxAttendees - seatsAvailable;
         if (gameForm.getMaxAttendees() < seatsAllocated) {
             throw new IllegalArgumentException(seatsAllocated + " seats are already allocated, "
@@ -120,14 +123,6 @@ public class Game {
     }
    
 
-    public Date getStartDate() {
-        return date == null ? null : new Date(date.getTime());
-    }
-    
-    
-    public int getMonth() {
-        return month;
-    }
 
     public int getMaxAttendees() {
         return maxAttendees;
@@ -153,9 +148,9 @@ public class Game {
         if (description != null) {            
             stringBuilder.append("Description").append(description).append("\n");
         }
-        if (date != null) {
-            stringBuilder.append("Start date: ").append(date.toString()).append("\n");
-        }
+//        if (date != null) {
+//            stringBuilder.append("Start date: ").append(date.toString()).append("\n");
+//        }
         stringBuilder.append("Max attendees: ").append(maxAttendees).append("\n");
         return stringBuilder.toString();
     }

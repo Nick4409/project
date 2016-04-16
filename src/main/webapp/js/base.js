@@ -130,14 +130,16 @@ createGame = function() {
 	var name =document.getElementById("name").value;
 	var description =document.getElementById("description").value;
     var sport=document.getElementById("sport").value;
-	var startDate =document.getElementById("datetimepickerstart").value;
-    var endDate =document.getElementById("datetimepickerend").value;
+	var startDate =$("#datetimepicker6").find("input").val();
+    var endDate =$("#datetimepicker7").find("input").val();
 	var attendees =document.getElementById("attendees").value;
-
+	alert("End Date: "+endDate+"\n"+"Start Date: "+startDate);
 	var request =  gapi.client.endpoints.createGame({'name': name, 'description':description, 'maxAttendees':attendees,
-		'seatsAvailable':attendees, 'startDate':startDate, 'endDate':endDate, 'latitude':0, 'longitude':0, 'sport':sport});
+		'seatsAvailable':attendees, 'startDateStr':startDate, 'endDateStr':endDate, 'latitude':0, 'longitude':0, 'sport':sport});
 	request.execute(alertInfo);
 }
+
+
 
 getGamesQueryButton = function(){
 	var request = gapi.client.endpoints.getAllGames().execute(
@@ -156,8 +158,11 @@ getGamesQueryButton = function(){
 	);
 }
 print = function(game) {
-	  var node = document.createElement("div");                 
-	  var textnode = document.createTextNode("Game name: "+game.name+" "+"Game description: "+game.description);
+	  var node = document.createElement("div");
+	  var places=game.maxAttendees-game.seatsAvailable;
+	  var textnode = document.createTextNode("Game name: "+game.name+"\n"+"Sport: "+game.sport+"\n"+"Game description: "+game.description+"\n"+
+			  "Start date: "+game.startDateStr+"\n"+"End date: "+game.endDateStr+"\n"
+			  +"Visitors: "+places+"/"+game.maxAttendees);
 	  node.appendChild(textnode);                             
 	  document.getElementById("gameNode").appendChild(node);
 };
