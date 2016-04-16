@@ -23,14 +23,14 @@
 </head>
 
 <body>
-	<a href="javascript:void(0);" class="btn" id="signinButton">Sign in</a>
-	<a href="javascript:void(0);" class="btn" id="userInfoButton">Show user info</a>
-	<a href="javascript:void(0);" class="btn" id="getUserFromDatastore">Get user from datastore</a>
+<a href="javascript:void(0);" class="btn" id="signinButton">Sign in</a>
+<a href="javascript:void(0);" class="btn" id="userInfoButton">Show user info</a>
+<a href="javascript:void(0);" class="btn" id="getUserFromDatastore">Get user from datastore</a>
 
 
 
 <div class="container">
-     <script type="text/javascript">
+    <script type="text/javascript">
         function init() {
             google.devrel.samples.hello.init('//' + window.location.host + '/_ah/api');
         }
@@ -38,114 +38,112 @@
     <script src="https://apis.google.com/js/client.js?onload=init"></script>
 </div>
 
-    <a href="javascript:void(0);" id="getGamesQueryButton" class="btn btn-default btn-lg">Показати всі</a>
+<a href="javascript:void(0);" id="getGamesQueryButton" class="btn btn-default btn-lg">Показати всі</a>
 
 
 <div id="gameNode"></div>
 
-    <!--Створення події-->
+<!--Створення події-->
 
-    <!--Кнопка додавання події-->
-    <a href="#createForm" id="wrapper">
-        <div class="button button-floating"></div>
-        <div class="button-floating-shadow"></div>
-    </a>
-    <!--Модальне вікно створення події-->
-    <a href="#window" class="overlay" id="createForm"></a>
-    <div class="popup">
-        <a class="close" title="Закрити" href="#close"></a>
-        <div class="col-sm-12" style="text-align: center;padding:10px;">
+<!--Кнопка додавання події-->
+<a href="#createForm" id="wrapper">
+    <div class="button button-floating"></div>
+    <div class="button-floating-shadow"></div>
+</a>
+<!--Модальне вікно створення події-->
+<a href="#window" class="overlay" id="createForm"></a>
+<div class="popup">
+    <a class="close" title="Закрити" href="#close"></a>
+    <div class="col-sm-12" style="text-align: center;padding:10px;">
         <text class="addEvent">Додайте подію</text></div>
-        <div class="container">
-            <div class="row">
-                <div class='col-sm-4'>
+    <div class="container">
+        <div class="row">
+            <div class='col-sm-4'>
                 <p>Назва:<input name="name" id="name" class="form-control" type="text" required><span></span></p>
                 <p>Опис:<textarea name="description" id="description" class="form-control" colls="50" rows="7" required></textarea></p>
                 <p>Вид спорту: <select name="sport" id="sport" class="form-control">
-                        <option value="Футбол">Футбол</option>
-                        <option value="Баскетбол">Баскетбол</option>
-                        <option value="Волейбол">Волейбол</option>
-                    </select></p>
+                    <option value="Футбол">Футбол</option>
+                    <option value="Баскетбол">Баскетбол</option>
+                    <option value="Волейбол">Волейбол</option>
+                </select></p>
                 <p>Кількість учасників:<input name="attendees" id="attendees" class="form-control"></p>
                 <p>Дата та час початку та закінчення:
-                    <div class="form-group">
-                         <div class='input-group date' id='datetimepicker6'>
-                            <input type='text' class="form-control" />
+                <div class="form-group">
+                    <div class='input-group date' id='datetimepicker6'>
+                        <input type='text' class="form-control" />
                             <span class="input-group-addon">
                                 <span class="glyphicon glyphicon-calendar"></span>
                             </span>
-                        </div>
                     </div>
+                </div>
 
-                    <div class="form-group">
-                        <div class='input-group date' id='datetimepicker7'>
-                            <input type='text' class="form-control" />
+                <div class="form-group">
+                    <div class='input-group date' id='datetimepicker7'>
+                        <input type='text' class="form-control" />
                             <span class="input-group-addon">
                                 <span class="glyphicon glyphicon-calendar"></span>
                             </span>
-                        </div>
-                    </div></p>
-                </div>
-
-                <!--   Google maps   -->
-                <div class="col-sm-4" style="align:right">
-                    <p>Місце проведення:</p>
-                    <div class="floating-panel">
-                        <input id="address" type="textbox" class="form-control" value="Kyiv" name="adress">
                     </div>
+                </div></p>
+            </div>
+
+            <!--   Google maps   -->
+            <div class="col-sm-6" style="align:left">
+                <p>Місце проведення:</p>
+                <div class="floating-panel">
+                    <input id="pac-input address" type="textbox" class="controls" value="Kyiv" name="adress">
                 </div>
-                    <div class="col-sm-1">
-                        <div class="floating-panel">
-                            <input id="submit" type="button" class="btn btn-default btn-sm" value="Знайти">
-                        </div>
-                        </div>
-                <div class="col-sm-5" style="align:right">
-                    <div class="map-responsive">
+            </div>
+
+            <div class="col-sm-5" style="align:right">
+                <div class="map-responsive">
                     <div id="googleMap" class="map-canvas"></div>
                     <div id="pip-pano" class="map-canvas"></div>
 
-                    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB2ria8CU7GcJZRdZD0MeZOk5eZ0vTWFiw"></script>
+
+                    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB2ria8CU7GcJZRdZD0MeZOk5eZ0vTWFiw&libraries=places&callback=initMap"
+                            async defer></script>
                     <script src="js/script.js"></script>
-                        </div>
-                    <!-- -->
-
-                    </div>
                 </div>
+                <!-- -->
+
             </div>
-            <script type="text/javascript">
-                $(function () {
-                    $('#datetimepicker6').datetimepicker();
-                    $('#datetimepicker7').datetimepicker({
-                        useCurrent: false, //Important! See issue #1075
-                        autoclose: true
-                    });
-                    $("#datetimepicker6").on("dp.change", function (e) {
-                        $('#datetimepicker7').data("DateTimePicker").minDate(e.date);
-                    });
-                    $("#datetimepicker7").on("dp.change", function (e) {
-                        $('#datetimepicker6').data("DateTimePicker").maxDate(e.date);
-                    });
-                });
-                </script>
-        <div class="col-sm-12" style="text-align:right">
-
-            <a href="javascript:void(0);" id="sendFormButton" class="btn btn-default btn-lg">Створити</a>
         </div>
-        </div>
-
     </div>
+    <script type="text/javascript">
+        $(function () {
+            $('#datetimepicker6').datetimepicker();
+            $('#datetimepicker7').datetimepicker({
+                useCurrent: false, //Important! See issue #1075
+                autoclose: true
+            });
+            $("#datetimepicker6").on("dp.change", function (e) {
+                $('#datetimepicker7').data("DateTimePicker").minDate(e.date);
+            });
+            $("#datetimepicker7").on("dp.change", function (e) {
+                $('#datetimepicker6').data("DateTimePicker").maxDate(e.date);
+            });
+        });
+    </script>
+    <div class="col-sm-12" style="text-align:right">
+
+        <a href="javascript:void(0);" id="sendFormButton" class="btn btn-default btn-lg">Створити</a>
+    </div>
+</div>
+
+</div>
 
 
 
-    <!-- jQuery -->
-    <script src="js/jquery.js"></script>
+<!-- jQuery -->
+<script src="js/jquery.js"></script>
 
-    <!-- Bootstrap Core JavaScript -->
-    <script	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<!-- Bootstrap Core JavaScript -->
+<script	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 
-    <!--Calendar essentials-->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.12.0/moment.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/3.1.0/js/bootstrap-datetimepicker.min.js"></script>
+<!--Calendar essentials-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.12.0/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/3.1.0/js/bootstrap-datetimepicker.min.js"></script>
 
 
 
