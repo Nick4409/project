@@ -22,4 +22,12 @@
 		<servlet-name>SendGameCreatedServlet</servlet-name>
 		<url-pattern>/game_created_email</url-pattern>
 	</servlet-mapping>
+	<servlet>
+		<servlet-name>SendRegisterForGameServlet</servlet-name>
+		<servlet-class>servlet.SendRegisterForGameServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>SendRegisterForGameServlet</servlet-name>
+		<url-pattern>/register_for_game_email</url-pattern>
+	</servlet-mapping>
 </web-app>

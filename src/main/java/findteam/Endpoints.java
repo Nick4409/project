@@ -3,6 +3,9 @@ package findteam;
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.ApiMethod.HttpMethod;
+import com.google.api.server.spi.config.Named;
+import com.google.api.server.spi.response.ConflictException;
+import com.google.api.server.spi.response.ForbiddenException;
 import com.google.api.server.spi.response.NotFoundException;
 import com.google.api.server.spi.response.UnauthorizedException;
 import com.google.appengine.api.taskqueue.Queue;
@@ -20,6 +23,7 @@ import form.ProfileForm;
 import static service.OfyService.ofy;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -135,18 +139,17 @@ public class Endpoints {
 
 		final long gameId = gameKey.getId();
 
-		
 		final Queue queue = QueueFactory.getDefaultQueue();
 		Game game = ofy().transact(new Work<Game>() {
 			@Override
 			public Game run() {
-				
+
 				Profile profile = getProfileFromUser(user);
-			
+
 				Game game = new Game(gameId, userId, gameForm);
-				
+
 				ofy().save().entities(profile, game);
-				
+
 				queue.add(ofy().getTransaction(), TaskOptions.Builder.withUrl("/game_created_email")
 						.param("email", profile.getEmail()).param("gameInfo", game.toString()));
 				return game;
@@ -154,18 +157,165 @@ public class Endpoints {
 		});
 		return game;
 	}
-	
-	
 
 	@ApiMethod(name = "getAllGames", path = "getAllGames", httpMethod = HttpMethod.POST)
 	public List queryGames() {
-		List<Game> result =ofy().load().type(Game.class)
-				
+		List<Game> result = ofy().load().type(Game.class)
+
 				.list();
 		return result;
 	}
 	
-	
-	
+	public static class WrappedBoolean {
 
+		private final Boolean result;
+		private final String reason;
+
+		public WrappedBoolean(Boolean result) {
+			this.result = result;
+			this.reason = "";
+		}
+
+		public WrappedBoolean(Boolean result, String reason) {
+			this.result = result;
+			this.reason = reason;
+		}
+
+		public Boolean getResult() {
+			return result;
+		}
+
+		public String getReason() {
+			return reason;
+		}
+	}
+	
+	@ApiMethod(name = "registerForGame", path = "game/{websafeGameKey}/registration", httpMethod = HttpMethod.POST)
+
+	public WrappedBoolean registerForGame(final User user,
+			@Named("websafeGameKey") final String websafeGameKey)
+					throws UnauthorizedException, NotFoundException, ForbiddenException, ConflictException {
+		if (user == null) {
+			throw new UnauthorizedException("Authorization required");
+		}
+		
+		WrappedBoolean result = ofy().transact(new Work<WrappedBoolean>() {
+			@Override
+			public WrappedBoolean run() {
+				try {
+					Key<Game> gameKey = Key.create(websafeGameKey);
+
+					Game game = ofy().load().key(gameKey).now();
+
+					if (game == null) {
+						return new WrappedBoolean(false, "No Game found with key: " + websafeGameKey);
+					}
+
+					Profile profile = getProfile(user);
+
+				
+					if (profile.getGamesKeysToAttend().contains(websafeGameKey)) {
+						return new WrappedBoolean(false, "Already registered");
+					} else if (game.getSeatsAvailable() <= 0) {
+						return new WrappedBoolean(false, "No seats available");
+					} else {
+						profile.addToGamesKeysToAttend(websafeGameKey);
+						
+						game.bookSeats(1);
+						
+						ofy().save().entities(profile, game).now();
+						
+						Queue queue = QueueFactory.getDefaultQueue();
+						queue.add(ofy().getTransaction(), TaskOptions.Builder.withUrl("/register_for_game_email")
+								.param("email", profile.getEmail()).param("gameInfo", game.toString()));
+						
+						return new WrappedBoolean(true, "Registration successful");
+					}
+				} catch (Exception e) {
+					return new WrappedBoolean(false, "Unknown exception");
+				}
+			}
+
+		});
+		if (!result.getResult()) {
+			if (result.getReason().contains("No Game found with key")) {
+				throw new NotFoundException(result.getReason());
+			} else if (result.getReason() == "Already registered") {
+				throw new ConflictException("You have already registered");
+			} else if (result.getReason() == "No seats available") {
+				throw new ConflictException("There are no seats available");
+			} else {
+				throw new ForbiddenException("Unknown exception");
+			}
+		}
+		return result;
+	}
+	
+	
+	@ApiMethod(name = "getGamesToAttend", path = "getGamesToAttend", httpMethod = HttpMethod.GET)
+	public Collection<Game> getGamesToAttend(final User user)
+			throws UnauthorizedException, NotFoundException {
+		if (user == null) {
+			throw new UnauthorizedException("Authorization required");
+		}
+
+		Profile profile = getProfileFromUser(user);
+		if (profile == null) {
+			throw new NotFoundException("Profile doesn't exist.");
+		}
+
+		List<String> keyStringsToAttend = profile.getGamesKeysToAttend(); 
+
+		List<Key<Game>> keysListToAttend = new ArrayList<>();
+		for (String keyString : keyStringsToAttend) {
+			keysListToAttend.add(Key.<Game> create(keyString));
+		}
+		return ofy().load().keys(keysListToAttend).values();
+	}
+	
+	
+	@ApiMethod(name = "unregisterFromGame", path = "game/{websafeGameKey}/registration", httpMethod = HttpMethod.DELETE)
+	public WrappedBoolean unregisterFromGame(final User user,
+			@Named("websafeGameKey") final String websafeGameKey)
+					throws UnauthorizedException, NotFoundException, ForbiddenException, ConflictException {
+		if (user == null) {
+			throw new UnauthorizedException("Authorization required");
+		}
+
+		WrappedBoolean result = ofy().transact(new Work<WrappedBoolean>() {
+			@Override
+			public WrappedBoolean run() {
+				try {
+
+					Key<Game> gameKey = Key.create(websafeGameKey);
+
+					Game game = ofy().load().key(gameKey).now();
+
+					if (game == null) {
+						return new WrappedBoolean(false, "No game found with key: " + websafeGameKey);
+					}
+
+					Profile profile = getProfile(user);
+
+					profile.deleteFromGamesKeysToAttend(websafeGameKey);
+
+					game.giveBackSeats(1);
+
+					ofy().save().entities(profile, game).now();
+					return new WrappedBoolean(true, "Unregistration successful");
+				} catch (Exception e) {
+					return new WrappedBoolean(false, "Unknown exception");
+				}
+			}
+
+		});
+		if (!result.getResult()) {
+			if (result.getReason().contains("No Game found with key")) {
+				throw new NotFoundException(result.getReason());
+			} else {
+				throw new ForbiddenException("Unknown exception");
+			}
+		}
+		return result;
+	}
 }
