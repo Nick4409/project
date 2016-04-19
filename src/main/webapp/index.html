@@ -12,7 +12,7 @@
     <link href="http://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
     <link href='https://fonts.googleapis.com/css?family=Russo+One&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Comfortaa|Playfair+Display+SC&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
-
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <!--Calendar css-->
     <link href="https://cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/d004434a5ff76e7b97c8b07c01f34ca69e635d97/build/css/bootstrap-datetimepicker.css" rel="stylesheet">
     <script src="js/script.js"></script>
@@ -23,26 +23,58 @@
 </head>
 
 <body>
-<a href="javascript:void(0);" class="btn" id="signinButton">Sign in</a>
-<a href="javascript:void(0);" class="btn" id="userInfoButton">Show user info</a>
-<a href="javascript:void(0);" class="btn" id="getUserFromDatastore">Get user from datastore</a>
-
-
+    <nav class="navbar navbar-custom">
+        <div class="container">
+            <div class="navbar-right">
+                <ul class="nav navbar-nav">
+                    <li class="hidden">
+                        <a href="#page-top"></a>
+                    </li>
+                    <li>
+                        <a class="page-scroll" id="signinButton" class="btn" href="javascript:void(0);">Sign in</a>
+                    </li>
+                    <li>
+                        <a class="page-scroll" id="userInfoButton" class="btn" href="javascript:void(0);">Show user info</a>
+                    </li>
+                    <li>
+                        <a class="page-scroll" id="getUserFromDatastore" class="btn" href="javascript:void(0);">Get user from datastore</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
 
 <div class="container">
     <script type="text/javascript">
         function init() {
             google.devrel.samples.hello.init('//' + window.location.host + '/_ah/api');
+        	
         }
     </script>
     <script src="https://apis.google.com/js/client.js?onload=init"></script>
 </div>
 
 <a href="javascript:void(0);" id="getGamesQueryButton" class="btn btn-default btn-lg">Показати всі</a>
+        
+<!--Всі події-->
+        <div class="container">
+            <div id="example-row" class="row">
+                <div class="col-xs-12 col-md-11">
+                   <div id="gameNode"></div>
+                </div> 
+                 <div class="col-sm-5" style="align:left">
+                <div class="map-responsive allPlaces">
+                    <div  class="map-canvas allPlaces"></div>
+                    <div id="pip-pano" class="map-canvas allPlaces"></div>
 
 
-<div id="gameNode"></div>
-
+                    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB2ria8CU7GcJZRdZD0MeZOk5eZ0vTWFiw&libraries=places&callback=initMap"
+                            async defer></script>
+                    <script src="js/script.js"></script>
+                </div>               
+            </div>
+        </div>
+      
 <!--Створення події-->
 
 <!--Кнопка додавання події-->
@@ -91,7 +123,7 @@
             <div class="col-sm-6" style="align:left">
                 <p>Місце проведення:</p>
                 <div class="floating-panel">
-                    <input id="pac-input address" type="textbox" class="controls" value="Kyiv" name="adress">
+                    <input id="pac-input address" type="text" class="controls" value="Kyiv" name="adress">
                 </div>
             </div>
 
@@ -146,6 +178,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/3.1.0/js/bootstrap-datetimepicker.min.js"></script>
 
 
-
+<script type="text/javascript">window.onload(getGamesQueryButton())</script>
 </body>
 </html>

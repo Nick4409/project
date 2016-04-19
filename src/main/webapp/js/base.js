@@ -24,7 +24,7 @@ google.devrel.samples.hello = google.devrel.samples.hello || {};
  * @type {string}
  */
 google.devrel.samples.hello.CLIENT_ID =
-    '1001315827289-em9jhbuphg99hnk98un4heo3ffhdi83m.apps.googleusercontent.com';
+    '40717604117-7rf257j3vi37p6ha3gttaji0te2j9rm7.apps.googleusercontent.com';
 
 /**
  * Scopes used by the application.
@@ -141,13 +141,14 @@ createGame = function() {
 
 
 
-getGamesQueryButton = function(){
+getGamesQueryButton= function(){
 	var request = gapi.client.endpoints.getAllGames().execute(
+			 
 		function(resp) {
 			if (!resp.code) {
 				resp.items = resp.items || [];
 		        for (var i = 0; i < resp.items.length; i++) {
-		        	print(resp.items[i]);
+		        	print(resp.items[i], i);
 		        }
 		        alert("END! Items: "+ resp.items.length);
 		    }
@@ -157,19 +158,51 @@ getGamesQueryButton = function(){
 		}
 	);
 }
-print = function(game) {
-	  var node = document.createElement("div");
-	  var places=game.maxAttendees-game.seatsAvailable;
-	  var textnode = document.createTextNode("Game name: "+game.name+"\n"+"Sport: "+game.sport+"\n"+"Game description: "+game.description+"\n"+
-			  "Start date: "+game.startDateStr+"\n"+"End date: "+game.endDateStr+"\n"
-			  +"Visitors: "+places+"/"+game.maxAttendees);
-	  node.appendChild(textnode);                             
-	  document.getElementById("gameNode").appendChild(node);
-};
+print = function(game, position){
+	var wrapperNode = document.createElement("div");
+	wrapperNode.setAttribute("class", "flip-card active-card");
+	//створення заголовку
+	var gameNameNode = document.createElement("div");
+	gameNameNode.setAttribute("class", "card label-info");
+	//створення наповнення заголовку
+	var header = document.createElement("text");
+	header.setAttribute("class", "cardGameName");
+	var name = document.createTextNode(game.name);
+	header.appendChild(name);
+	//власне заповнення заголовку іосновної ноди заголовком
+	gameNameNode.appendChild(header);
 
-google.devrel.samples.hello.getUserInfo = function() {
-	var request =  gapi.client.endpoints.getMyInfo();
-	request.execute(alertInfo);
+
+	//лінк в нєкуда
+	var action = document.createElement("a");
+	action.setAttribute("href", "javascript:void(0)");
+	action.setAttribute("class", "button button-linkbutton button-linkbutton-shadow");
+	action.setAttribute("id", "");
+	var play= document.createElement("i");
+	play.setAttribute("class","material-icons");
+	
+	action.appendChild(play)
+	//опис
+	var gameBodyNode = document.createElement("div");
+	gameBodyNode.setAttribute("class", "well");
+
+	var header = document.createElement("text");
+	header.setAttribute("class", "cardGameDiscription");
+
+	var places = game.maxAttendees-game.seatsAvailable;
+	var description = document.createTextNode("Sport: "+game.sport+"\n"+"Game description: "+game.description+"\n"+
+	"Start date: "+game.startDateStr+"\n"+"End date: "+game.endDateStr+"\n"
+	+"Visitors: "+places+"/"+game.maxAttendees);
+
+	header.appendChild(description);
+	gameBodyNode.appendChild(header);
+
+	wrapperNode.appendChild(gameNameNode);
+	wrapperNode.appendChild(action); 
+	wrapperNode.appendChild(gameBodyNode);
+
+
+	document.getElementById("gameNode").appendChild(wrapperNode);
 }
 google.devrel.samples.hello.getMeFromDatastore = function() {
 	var request =  gapi.client.endpoints.getMeFromDatastore();
