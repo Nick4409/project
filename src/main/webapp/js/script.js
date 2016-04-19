@@ -82,8 +82,8 @@ function placeMarkerAndPanTo(latLng, map) {
 }
 
 function getMarkersLat(){
-    return  markers.position.lat;
+    return  marker.position.lat;
 }
 function getMarkersLng(){
-    return  markers.position.lng;
+    return  marker.position.lng;
 }
