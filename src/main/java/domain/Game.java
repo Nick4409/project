@@ -21,7 +21,7 @@ public class Game {
 	@Id
     public long id;
     
-	@Index
+// 	@Index Поки ніби не потрібен)
     public String name;
     
     public String description;
@@ -35,7 +35,7 @@ public class Game {
     @Index
     private long startDate;
     public String startDateStr;
-    @Index
+// 	@Index Поки ніби не потрібен)
     private long endDate;
     public String endDateStr;
     
@@ -44,7 +44,7 @@ public class Game {
     @Index
     public String sport;
 
-    @Index
+// 	@Index Поки ніби не потрібен)
     public int maxAttendees;
 
     @Index

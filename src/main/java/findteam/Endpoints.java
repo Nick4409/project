@@ -17,7 +17,6 @@ import com.googlecode.objectify.Work;
 import com.googlecode.objectify.cmd.Query;
 import com.googlecode.objectify.annotation.Entity;
 
-
 import domain.Game;
 import domain.Profile;
 import form.GameForm;
@@ -172,18 +171,6 @@ public class Endpoints {
 				.list();
 		return result;
 	}
-
-	@ApiMethod(name = "getFootballGames", path = "getFootballGames", httpMethod = HttpMethod.POST)
-	public List getFootballGames() {
-		Date d = new Date();
-		List<Game> result = ofy().load().type(Game.class)
-				.filter("startDate >", d.getTime())
-				.filter("sport", "Футбол")
-				.order("startDate")
-				.list();
-		return result;
-	}
-
 
 	public static class WrappedBoolean {
 
@@ -344,10 +331,10 @@ public class Endpoints {
 			return result;
 		}
 	}
-	
+
 	@ApiMethod(name = "likeSkill", path = "likeSkill", httpMethod = HttpMethod.POST)
-	public WrappedInteger likeSkill(final User putLike, @Named("getLikeUserId") final String getLikeUserId, @Named("sport") final  String sport)
-			throws UnauthorizedException, NotFoundException {
+	public WrappedInteger likeSkill(final User putLike, @Named("getLikeUserId") final String getLikeUserId,
+			@Named("sport") final String sport) throws UnauthorizedException, NotFoundException {
 		if (putLike == null) {
 			throw new UnauthorizedException("Authorization required");
 		}
@@ -360,19 +347,19 @@ public class Endpoints {
 		if (getLikeProfile == null) {
 			throw new NotFoundException("Profile doesn't exist.");
 		}
-		
+
 		if (getLikeProfile.getLikes().get(sport).contains(putLikeProfile.getId())) {
 			getLikeProfile.removeLikeMySkill(sport, putLikeProfile.getId());
 			return new WrappedInteger(getLikeProfile.getNumOfLikes(sport));
 		} else {
 			getLikeProfile.likeMySkill(sport, putLikeProfile.getId());
 			return new WrappedInteger(getLikeProfile.getNumOfLikes(sport));
-			}
+		}
 	}
-	
+
 	@ApiMethod(name = "dislikeSkill", path = "dislikeSkill", httpMethod = HttpMethod.POST)
-	public WrappedInteger dislikeSkill(final User putDislike, @Named("getDislikeUserId") final String getDislikeUserId, @Named("sport") final String sport)
-			throws UnauthorizedException, NotFoundException {
+	public WrappedInteger dislikeSkill(final User putDislike, @Named("getDislikeUserId") final String getDislikeUserId,
+			@Named("sport") final String sport) throws UnauthorizedException, NotFoundException {
 		if (putDislike == null) {
 			throw new UnauthorizedException("Authorization required");
 		}
@@ -385,7 +372,7 @@ public class Endpoints {
 		if (getDislikeProfile == null) {
 			throw new NotFoundException("Profile doesn't exist.");
 		}
-		
+
 		if (getDislikeProfile.getDislikes().get(sport).contains(putDislikeProfile.getId())) {
 			getDislikeProfile.removeDislikeMySkill(sport, putDislikeProfile.getId());
 			return new WrappedInteger(getDislikeProfile.getNumOfLikes(sport));
@@ -394,10 +381,44 @@ public class Endpoints {
 			return new WrappedInteger(getDislikeProfile.getNumOfLikes(sport));
 		}
 	}
-	
 
+	@ApiMethod(name = "getFootballGames", path = "getFootballGames", httpMethod = HttpMethod.POST)
+	public List<Game> getFootballGames() {
+		Date d = new Date();
+		List<Game> result = ofy().load().type(Game.class).filter("startDate >", d.getTime())
+				.filter("sport", "Футбол").order("startDate").list();
+		return result;
+	}
 
-	
-	
+	@ApiMethod(name = "getBasketballGames", path = "getBasketballGames", httpMethod = HttpMethod.POST)
+	public List<Game> getBasketballGames() {
+		Date d = new Date();
+		List<Game> result = ofy().load().type(Game.class).filter("startDate >", d.getTime())
+				.filter("sport", "Баскетбол").order("startDate").list();
+		return result;
+	}
 
+	@ApiMethod(name = "getVolleyballGames", path = "getVolleyballGames", httpMethod = HttpMethod.POST)
+	public List<Game> getVolleyballGames() {
+		Date d = new Date();
+		List<Game> result = ofy().load().type(Game.class).filter("startDate >", d.getTime())
+				.filter("sport", "Волейбол").order("startDate").list();
+		return result;
+	}
+
+	@ApiMethod(name = "getTennisGames", path = "getTennisGames", httpMethod = HttpMethod.POST)
+	public List<Game> getTennisGames() {
+		Date d = new Date();
+		List<Game> result = ofy().load().type(Game.class).filter("startDate >", d.getTime())
+				.filter("sport", "Теніс").order("startDate").list();
+		return result;
+	}
+
+	@ApiMethod(name = "getHockeyGames", path = "getHockeyGames", httpMethod = HttpMethod.POST)
+	public List<Game> getHockeyGames() {
+		Date d = new Date();
+		List<Game> result = ofy().load().type(Game.class).filter("startDate >", d.getTime())
+				.filter("sport", "Хокей").order("startDate").list();
+		return result;
+	}
 }
