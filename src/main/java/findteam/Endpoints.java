@@ -1,4 +1,4 @@
-package findteam;
+﻿package findteam;
 
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
@@ -14,10 +14,14 @@ import com.google.appengine.api.taskqueue.TaskOptions;
 import com.google.appengine.api.users.User;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.Work;
+import com.googlecode.objectify.cmd.Query;
+import com.googlecode.objectify.annotation.Entity;
+
 
 import domain.Game;
 import domain.Profile;
 import form.GameForm;
+import form.GameQueryForm;
 import form.ProfileForm;
 
 import static service.OfyService.ofy;
@@ -168,6 +172,8 @@ public class Endpoints {
 		return result;
 	}
 
+
+
 	public static class WrappedBoolean {
 
 		private final Boolean result;
@@ -315,6 +321,7 @@ public class Endpoints {
 		return result;
 	}
 
+
 	public static class WrappedInteger {
 
 		private final int result;
@@ -379,4 +386,43 @@ public class Endpoints {
 	}
 	
 
+
+	@ApiMethod(name = "queryGames1", path = "queryGames1", httpMethod = HttpMethod.POST)
+	public List queryGames1(GameQueryForm gameQueryForm) {
+		Iterable<Game> gameIterable = gameQueryForm.getQuery();
+		List<Game> result = new ArrayList<>(0);
+		List<Key<Profile>> organizersKeyList = new ArrayList<>(0);
+		for (Game game : gameIterable) {
+			organizersKeyList.add(Key.create(Profile.class, game.getOrganizerUserId()));
+			result.add(game);
+		}
+		//
+		ofy().load().keys(organizersKeyList);
+		return result;
+	}
+
+	//
+	@ApiMethod(name = "getConferencesCreated", path = "getConferencesCreated", httpMethod = HttpMethod.POST)
+	public List<Game> getGamesCreated(final User user) throws UnauthorizedException {
+		if (user == null) {
+			throw new UnauthorizedException("Authorization required");
+		}
+		String userId = user.getUserId();
+		Key<Profile> userKey = Key.create(Profile.class, userId);
+		return ofy().load().type(Game.class).ancestor(userKey).order("name").list();
+	}
+	
+	
+
+	public List<Game> filterPlayground() {
+		Query<Game> query = ofy().load().type(Game.class);
+
+		query = query.filter("sport =", "Футбол");
+
+		query = query.filter("month =", 4);
+
+		query = query.filter("maxAttendees >", 10).order("maxAttendees").order("name");
+
+		return query.list();
+	}
 }
