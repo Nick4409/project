@@ -27,6 +27,7 @@ import static service.OfyService.ofy;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -102,8 +103,9 @@ public class Endpoints {
 			int quantityOfGames = profileForm.getQuantityOfGames();
 			int visitedGames = profileForm.getVisitedGames();
 			int unvisitedGames = profileForm.getUnvisitedGames();
-			int[] sportSkill = profileForm.getSportSkill();
-			profile.update(sportSkill, visitedGames, unvisitedGames, quantityOfGames);
+			HashMap<String, ArrayList<String>> likeSkill = profileForm.getLikes();
+			HashMap<String, ArrayList<String>> dislikeSkill = profileForm.getDislikes();
+			profile.update(likeSkill, dislikeSkill, visitedGames, unvisitedGames, quantityOfGames);
 		}
 		ofy().save().entity(profile).now();
 		return profile;
@@ -170,10 +172,6 @@ public class Endpoints {
 	}
 
 
-
-	
-	
-	
 
 	public static class WrappedBoolean {
 
@@ -322,8 +320,98 @@ public class Endpoints {
 		return result;
 	}
 
+
+
+	public static class WrappedInteger {
+
+		private final int result;
+
+		public WrappedInteger(int result) {
+			this.result = result;
+		}
+
+		public int getResult() {
+			return result;
+		}
+	}
 	
+	@ApiMethod(name = "likeSkill", path = "likeSkill", httpMethod = HttpMethod.POST)
+	public WrappedInteger likeSkill(final User putLike, @Named("getLikeUserId") final String getLikeUserId, @Named("sport") final  String sport)
+			throws UnauthorizedException, NotFoundException {
+		if (putLike == null) {
+			throw new UnauthorizedException("Authorization required");
+		}
+		Profile putLikeProfile = getProfileFromUser(putLike);
+		if (putLikeProfile == null) {
+			throw new NotFoundException("Profile doesn't exist.");
+		}
+		Key key = Key.create(Profile.class, getLikeUserId);
+		Profile getLikeProfile = (Profile) ofy().load().key(key).now();
+		if (getLikeProfile == null) {
+			throw new NotFoundException("Profile doesn't exist.");
+		}
+		
+		if (getLikeProfile.getLikes().get(sport).contains(putLikeProfile.getId())) {
+			getLikeProfile.removeLikeMySkill(sport, putLikeProfile.getId());
+			return new WrappedInteger(getLikeProfile.getNumOfLikes(sport));
+		} else {
+			getLikeProfile.likeMySkill(sport, putLikeProfile.getId());
+			return new WrappedInteger(getLikeProfile.getNumOfLikes(sport));
+			}
+	}
 	
+	@ApiMethod(name = "dislikeSkill", path = "dislikeSkill", httpMethod = HttpMethod.POST)
+	public WrappedInteger dislikeSkill(final User putDislike, @Named("getDislikeUserId") final String getDislikeUserId, @Named("sport") final String sport)
+			throws UnauthorizedException, NotFoundException {
+		if (putDislike == null) {
+			throw new UnauthorizedException("Authorization required");
+		}
+		Profile putDislikeProfile = getProfileFromUser(putDislike);
+		if (putDislikeProfile == null) {
+			throw new NotFoundException("Profile doesn't exist.");
+		}
+		Key key = Key.create(Profile.class, getDislikeUserId);
+		Profile getDislikeProfile = (Profile) ofy().load().key(key).now();
+		if (getDislikeProfile == null) {
+			throw new NotFoundException("Profile doesn't exist.");
+		}
+		
+		if (getDislikeProfile.getDislikes().get(sport).contains(putDislikeProfile.getId())) {
+			getDislikeProfile.removeDislikeMySkill(sport, putDislikeProfile.getId());
+			return new WrappedInteger(getDislikeProfile.getNumOfLikes(sport));
+		} else {
+			getDislikeProfile.likeMySkill(sport, putDislikeProfile.getId());
+			return new WrappedInteger(getDislikeProfile.getNumOfLikes(sport));
+		}
+	}
+	
+
+
+	@ApiMethod(name = "queryGames1", path = "queryGames1", httpMethod = HttpMethod.POST)
+	public List queryGames1(GameQueryForm gameQueryForm) {
+		Iterable<Game> gameIterable = gameQueryForm.getQuery();
+		List<Game> result = new ArrayList<>(0);
+		List<Key<Profile>> organizersKeyList = new ArrayList<>(0);
+		for (Game game : gameIterable) {
+			organizersKeyList.add(Key.create(Profile.class, game.getOrganizerUserId()));
+			result.add(game);
+		}
+		//
+		ofy().load().keys(organizersKeyList);
+		return result;
+	}
+
+	//
+	@ApiMethod(name = "getConferencesCreated", path = "getConferencesCreated", httpMethod = HttpMethod.POST)
+	public List<Game> getGamesCreated(final User user) throws UnauthorizedException {
+		if (user == null) {
+			throw new UnauthorizedException("Authorization required");
+		}
+		String userId = user.getUserId();
+		Key<Profile> userKey = Key.create(Profile.class, userId);
+		return ofy().load().type(Game.class).ancestor(userKey).order("name").list();
+	}
+
 	
 	
 
