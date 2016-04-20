@@ -158,6 +158,8 @@ getGamesQueryButton= function(){
 		}
 	);
 }
+
+
 print = function(game, position){
 	 var obj = {
 		 id: game.id,

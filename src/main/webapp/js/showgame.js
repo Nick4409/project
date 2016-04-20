@@ -36,6 +36,7 @@ function inflateGame (game) {
 	startDateDiv.appendChild(startDate);
 	wrapper.appendChild(startDateDiv);
 	
+	
 	var endDateDiv = document.createElement("div");
 	endDateDiv.setAttribute("class", "endDateGameForm");
 	var endDate = document.createTextNode(game.endDateStr);
