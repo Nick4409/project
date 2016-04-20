@@ -39,7 +39,7 @@ public class Game {
     
     public double latitude;
     public double longitude;
-    
+    @Index
     public String sport;
 
     @Index

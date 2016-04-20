@@ -21,13 +21,14 @@ import com.googlecode.objectify.annotation.Entity;
 import domain.Game;
 import domain.Profile;
 import form.GameForm;
-import form.GameQueryForm;
+
 import form.ProfileForm;
 
 import static service.OfyService.ofy;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -170,6 +171,16 @@ public class Endpoints {
 		return result;
 	}
 
+	@ApiMethod(name = "getFootballGames", path = "getFootballGames", httpMethod = HttpMethod.POST)
+	public List getFootballGames() {
+		Date d = new Date();
+		List<Game> result = ofy().load().type(Game.class)
+				.filter("startDate >", d.getTime())
+				.filter("sport", "Футбол")
+				.order("startDate")
+				.list();
+		return result;
+	}
 
 
 	
@@ -323,21 +334,7 @@ public class Endpoints {
 		return result;
 	}
 
-	@ApiMethod(name = "queryGames1", path = "queryGames1", httpMethod = HttpMethod.POST)
-	public List queryGames1(GameQueryForm gameQueryForm) {
-		Iterable<Game> gameIterable = gameQueryForm.getQuery();
-		List<Game> result = new ArrayList<>(0);
-		List<Key<Profile>> organizersKeyList = new ArrayList<>(0);
-		for (Game game : gameIterable) {
-			organizersKeyList.add(Key.create(Profile.class, game.getOrganizerUserId()));
-			result.add(game);
-		}
-		//
-		ofy().load().keys(organizersKeyList);
-		return result;
-	}
-
-	//
+	//Чуваки, це чиїх рук справа? перейменували хоча б
 	@ApiMethod(name = "getConferencesCreated", path = "getConferencesCreated", httpMethod = HttpMethod.POST)
 	public List<Game> getGamesCreated(final User user) throws UnauthorizedException {
 		if (user == null) {
@@ -350,15 +347,4 @@ public class Endpoints {
 	
 	
 
-	public List<Game> filterPlayground() {
-		Query<Game> query = ofy().load().type(Game.class);
-
-		query = query.filter("sport =", "Футбол");
-
-		query = query.filter("month =", 4);
-
-		query = query.filter("maxAttendees >", 10).order("maxAttendees").order("name");
-
-		return query.list();
-	}
 }

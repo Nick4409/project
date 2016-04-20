@@ -142,13 +142,12 @@ createGame = function() {
 
 getGamesQueryButton= function(){
 	var request = gapi.client.endpoints.getAllGames().execute(
-			 
+		
 		function(resp) {
 			if (!resp.code) {
-				resp.items = resp.items || [];
-		        for (var i = 0; i < resp.items.length; i++) {
-		        	print(resp.items[i], i);
-		        }
+				page=1;
+				list = resp.items || [];
+				paging(list, page);
 		    }
 			else{
 				alert("Smth went wrong! resp.code: "+resp.code);
@@ -156,9 +155,30 @@ getGamesQueryButton= function(){
 		}
 	);
 }
+var list;
+var page;
+var currentlast;
+var onScreen="ALL";
 
+paging = function(list, page){
+	if(button!=null){
+	var button = document.getElementById("nextPage");
+	button.parentNode.removeNode(button);
+	}
+	var last = 5*page;
+	var first = last-5;
+	if(last>list.length) last=list.length;
+	if(list.length>=first){
+		for(var i=first; i<last; i++ ){
+			print(list[i]);
+		}
+	}
+	
+	currentlast=last;
+	if(list.length>currentlast) printNextButton();
+}
 
-print = function(game, position){
+print = function(game){
 	 var obj = {
 		 id: game.id,
          name: game.name,
@@ -222,6 +242,22 @@ print = function(game, position){
 
 	document.getElementById("gameNode").appendChild(wrapperNode);
 }
+
+printNextButton = function(){
+	var button = document.createElement("a");
+	button.setAttribute("id", "nextPage");
+	button.setAttribute("class", "btn btn-default btn-lg");
+	button.setAttribute("href", "javascript:void(0)");
+	var text = document.createTextNode("Більше");
+	button.appendChild(text);
+	document.getElementById("gameNode").appendChild(button);
+	button.onclick=function(){
+		page++;
+		paging(list, page);
+	};
+}
+
+
 google.devrel.samples.hello.getMeFromDatastore = function() {
 	var request =  gapi.client.endpoints.getMeFromDatastore();
 	request.execute(alertInfo);
