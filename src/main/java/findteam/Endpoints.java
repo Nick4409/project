@@ -1,4 +1,4 @@
-package findteam;
+﻿package findteam;
 
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
@@ -15,6 +15,8 @@ import com.google.appengine.api.users.User;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.Work;
 import com.googlecode.objectify.cmd.Query;
+import com.googlecode.objectify.annotation.Entity;
+
 
 import domain.Game;
 import domain.Profile;
@@ -167,6 +169,12 @@ public class Endpoints {
 				.list();
 		return result;
 	}
+
+
+
+	
+	
+	
 
 	public static class WrappedBoolean {
 

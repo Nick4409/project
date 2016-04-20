@@ -94,9 +94,7 @@ google.devrel.samples.hello.enableButtons = function() {
 	  google.devrel.samples.hello.getUserInfo();
   }
   
-  document.getElementById('getUserFromDatastore').onclick = function() {
-	  google.devrel.samples.hello.getMeFromDatastore();
-  }
+
   document.getElementById('sendFormButton').onclick = function() {
 	  createGame();
   }
@@ -118,6 +116,7 @@ google.devrel.samples.hello.init = function(apiRoot) {
       google.devrel.samples.hello.enableButtons();
       google.devrel.samples.hello.signin(true,
       google.devrel.samples.hello.userAuthed);
+      getGamesQueryButton();
     }
   }
 
@@ -141,15 +140,15 @@ createGame = function() {
 
 
 
-getGamesQueryButton = function(){
+getGamesQueryButton= function(){
 	var request = gapi.client.endpoints.getAllGames().execute(
+			 
 		function(resp) {
 			if (!resp.code) {
 				resp.items = resp.items || [];
 		        for (var i = 0; i < resp.items.length; i++) {
-		        	print(resp.items[i]);
+		        	print(resp.items[i], i);
 		        }
-		        alert("END! Items: "+ resp.items.length);
 		    }
 			else{
 				alert("Smth went wrong! resp.code: "+resp.code);
@@ -157,19 +156,71 @@ getGamesQueryButton = function(){
 		}
 	);
 }
-print = function(game) {
-	  var node = document.createElement("div");
-	  var places=game.maxAttendees-game.seatsAvailable;
-	  var textnode = document.createTextNode("Game name: "+game.name+"\n"+"Sport: "+game.sport+"\n"+"Game description: "+game.description+"\n"+
-			  "Start date: "+game.startDateStr+"\n"+"End date: "+game.endDateStr+"\n"
-			  +"Visitors: "+places+"/"+game.maxAttendees);
-	  node.appendChild(textnode);                             
-	  document.getElementById("gameNode").appendChild(node);
-};
 
-google.devrel.samples.hello.getUserInfo = function() {
-	var request =  gapi.client.endpoints.getMyInfo();
-	request.execute(alertInfo);
+
+print = function(game, position){
+	 var obj = {
+		 id: game.id,
+         name: game.name,
+         sport:game.sport,
+         description: game.description,
+         startDateStr: game.startDateStr,
+         endDateStr: game.endDateStr,
+         latitude: game.latitude,
+         longitude: game.longitude,
+         seatsAvailable: game.seatsAvailable,
+         maxAttendees: game.maxAttendees
+     },
+     objStringified = JSON.stringify(obj), 
+     objStringifiedAndEncoded = encodeURIComponent(objStringified);
+	 
+	
+	
+	var wrapperNode = document.createElement("div");
+	wrapperNode.setAttribute("class", "flip-card active-card");
+	//створення заголовку
+	var gameNameNode = document.createElement("div");
+	gameNameNode.setAttribute("class", "card label-info");
+	//створення наповнення заголовку
+	var header = document.createElement("text");
+	header.setAttribute("class", "cardGameName");
+	var name = document.createTextNode(game.name);
+	header.appendChild(name);
+	//власне заповнення заголовку іосновної ноди заголовком
+	gameNameNode.appendChild(header);
+
+
+	//лінк в нєкуда update в сторінку гри
+	var action = document.createElement("a");
+	var gameLink="https://findteamtest.appspot.com/showgame.html?"+objStringifiedAndEncoded;
+	action.setAttribute("href", gameLink);
+	action.setAttribute("class", "button button-linkbutton button-linkbutton-shadow");
+	action.setAttribute("id", "");
+	var play= document.createElement("i");
+	play.setAttribute("class","material-icons");
+	
+	action.appendChild(play)
+	//опис
+	var gameBodyNode = document.createElement("div");
+	gameBodyNode.setAttribute("class", "well");
+
+	var header = document.createElement("text");
+	header.setAttribute("class", "cardGameDiscription");
+
+	var places = game.maxAttendees-game.seatsAvailable;
+	var description = document.createTextNode("Sport: "+game.sport+"\n"+"Game description: "+game.description+"\n"+
+	"Start date: "+game.startDateStr+"\n"+"End date: "+game.endDateStr+"\n"
+	+"Visitors: "+places+"/"+game.maxAttendees);
+
+	header.appendChild(description);
+	gameBodyNode.appendChild(header);
+
+	wrapperNode.appendChild(gameNameNode);
+	wrapperNode.appendChild(action); 
+	wrapperNode.appendChild(gameBodyNode);
+
+
+	document.getElementById("gameNode").appendChild(wrapperNode);
 }
 google.devrel.samples.hello.getMeFromDatastore = function() {
 	var request =  gapi.client.endpoints.getMeFromDatastore();
@@ -178,3 +229,4 @@ google.devrel.samples.hello.getMeFromDatastore = function() {
 function alertInfo (response) {
 	alert(response.message);	
 }
+
