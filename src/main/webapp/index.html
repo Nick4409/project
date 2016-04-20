@@ -5,7 +5,8 @@
     <meta charset="utf-8">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
     <link type="text/css" rel="stylesheet" href="css/style.css">
-
+	<link type="text/css" rel="stylesheet" href="css/simplePagination.css"/>
+	
     <!-- Custom Fonts -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" type="text/css">
     <link href="http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css">
@@ -19,6 +20,7 @@
     <script src="js/base.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script type="text/javascript" src="js/jquery.simplePagination.js"></script>
 
 </head>
 
@@ -34,11 +36,9 @@
                         <a class="page-scroll" id="signinButton" class="btn" href="javascript:void(0);">Sign in</a>
                     </li>
                     <li>
-                        <a class="page-scroll" id="userInfoButton" class="btn" href="javascript:void(0);">Show user info</a>
+                        <a class="page-scroll" id="userInfoButton" class="btn" href="javascript:void(0);">Мій профіль</a>
                     </li>
-                    <li>
-                        <a class="page-scroll" id="getUserFromDatastore" class="btn" href="javascript:void(0);">Get user from datastore</a>
-                    </li>
+            
                 </ul>
             </div>
         </div>
@@ -48,37 +48,47 @@
     <script type="text/javascript">
         function init() {
             google.devrel.samples.hello.init('//' + window.location.host + '/_ah/api');
-        	
         }
     </script>
     <script src="https://apis.google.com/js/client.js?onload=init"></script>
 </div>
-
-<a href="javascript:void(0);" id="getGamesQueryButton" class="btn btn-default btn-lg">Показати всі</a>
-        
+<div class="filters">
+<div class="col-md-11">
+<a href="javascript:void(0);" id="getGamesQueryButton" class="btn btn-sm" role="button">Всі</a>
+<a href="javascript:void(0);" id="football" class="btn btn-sm" role="button">Футбол</a>
+<a href="javascript:void(0);" id="basketball" class="btn btn-sm" role="button">Баскетбол</a>
+<a href="javascript:void(0);" id="volleyball" class="btn btn-sm" role="button">Волейбол</a>
+<a href="javascript:void(0);" id="tennis" class="btn btn-sm" role="button">Теніс</a>
+<a href="javascript:void(0);" id="hockey" class="btn btn-sm" role="button">Хокей</a>
+</div>
+</div>
 <!--Всі події-->
         <div class="container">
             <div id="example-row" class="row">
-                <div class="col-xs-12 col-md-11">
+                <div class="col-md-11">
                    <div id="gameNode"></div>
                 </div> 
-                 <div class="col-sm-5" style="align:left">
-                <div class="map-responsive allPlaces">
-                    <div  class="map-canvas allPlaces"></div>
-                    <div id="pip-pano" class="map-canvas allPlaces"></div>
-
-
-                    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB2ria8CU7GcJZRdZD0MeZOk5eZ0vTWFiw&libraries=places&callback=initMap"
-                            async defer></script>
-                    <script src="js/script.js"></script>
+                 <div class="col-sm-6" style="align:left">
+              	<div id="googleMapAll"></div> 
+              	<div id="pip-panoAll"></div>
+					<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB2ria8CU7GcJZRdZD0MeZOk5eZ0vTWFiw"></script> 
+                    <script src="js/allPlaces.js"></script>
                 </div>               
             </div>
         </div>
-      
+      <div id="light-pagination" class="pagination"></div>
+      <script>
+      $(function() {
+    	    $(#light-pagination).pagination({
+    	        items: 100,
+    	        itemsOnPage:1,
+    	        cssStyle: 'light-theme'
+    	    });
+    	});</script>
 <!--Створення події-->
 
 <!--Кнопка додавання події-->
-<a href="#createForm" id="wrapper">
+<a href="#createForm" id="buttonadd">
     <div class="button button-floating"></div>
     <div class="button-floating-shadow"></div>
 </a>
@@ -97,6 +107,8 @@
                     <option value="Футбол">Футбол</option>
                     <option value="Баскетбол">Баскетбол</option>
                     <option value="Волейбол">Волейбол</option>
+                    <option value="Теніс">Теніс</option>
+                    <option value="Хокей">Хокей</option>
                 </select></p>
                 <p>Кількість учасників:<input name="attendees" id="attendees" class="form-control"></p>
                 <p>Дата та час початку та закінчення:

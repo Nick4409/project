@@ -94,9 +94,7 @@ google.devrel.samples.hello.enableButtons = function() {
 	  google.devrel.samples.hello.getUserInfo();
   }
   
-  document.getElementById('getUserFromDatastore').onclick = function() {
-	  google.devrel.samples.hello.getMeFromDatastore();
-  }
+
   document.getElementById('sendFormButton').onclick = function() {
 	  createGame();
   }
