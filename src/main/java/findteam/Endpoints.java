@@ -14,10 +14,12 @@ import com.google.appengine.api.taskqueue.TaskOptions;
 import com.google.appengine.api.users.User;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.Work;
+import com.googlecode.objectify.cmd.Query;
 
 import domain.Game;
 import domain.Profile;
 import form.GameForm;
+import form.GameQueryForm;
 import form.ProfileForm;
 
 import static service.OfyService.ofy;
@@ -165,7 +167,7 @@ public class Endpoints {
 				.list();
 		return result;
 	}
-	
+
 	public static class WrappedBoolean {
 
 		private final Boolean result;
@@ -189,16 +191,15 @@ public class Endpoints {
 			return reason;
 		}
 	}
-	
+
 	@ApiMethod(name = "registerForGame", path = "game/{websafeGameKey}/registration", httpMethod = HttpMethod.POST)
 
-	public WrappedBoolean registerForGame(final User user,
-			@Named("websafeGameKey") final String websafeGameKey)
-					throws UnauthorizedException, NotFoundException, ForbiddenException, ConflictException {
+	public WrappedBoolean registerForGame(final User user, @Named("websafeGameKey") final String websafeGameKey)
+			throws UnauthorizedException, NotFoundException, ForbiddenException, ConflictException {
 		if (user == null) {
 			throw new UnauthorizedException("Authorization required");
 		}
-		
+
 		WrappedBoolean result = ofy().transact(new Work<WrappedBoolean>() {
 			@Override
 			public WrappedBoolean run() {
@@ -213,22 +214,21 @@ public class Endpoints {
 
 					Profile profile = getProfile(user);
 
-				
 					if (profile.getGamesKeysToAttend().contains(websafeGameKey)) {
 						return new WrappedBoolean(false, "Already registered");
 					} else if (game.getSeatsAvailable() <= 0) {
 						return new WrappedBoolean(false, "No seats available");
 					} else {
 						profile.addToGamesKeysToAttend(websafeGameKey);
-						
+
 						game.bookSeats(1);
-						
+
 						ofy().save().entities(profile, game).now();
-						
+
 						Queue queue = QueueFactory.getDefaultQueue();
 						queue.add(ofy().getTransaction(), TaskOptions.Builder.withUrl("/register_for_game_email")
 								.param("email", profile.getEmail()).param("gameInfo", game.toString()));
-						
+
 						return new WrappedBoolean(true, "Registration successful");
 					}
 				} catch (Exception e) {
@@ -250,11 +250,9 @@ public class Endpoints {
 		}
 		return result;
 	}
-	
-	
+
 	@ApiMethod(name = "getGamesToAttend", path = "getGamesToAttend", httpMethod = HttpMethod.GET)
-	public Collection<Game> getGamesToAttend(final User user)
-			throws UnauthorizedException, NotFoundException {
+	public Collection<Game> getGamesToAttend(final User user) throws UnauthorizedException, NotFoundException {
 		if (user == null) {
 			throw new UnauthorizedException("Authorization required");
 		}
@@ -264,7 +262,7 @@ public class Endpoints {
 			throw new NotFoundException("Profile doesn't exist.");
 		}
 
-		List<String> keyStringsToAttend = profile.getGamesKeysToAttend(); 
+		List<String> keyStringsToAttend = profile.getGamesKeysToAttend();
 
 		List<Key<Game>> keysListToAttend = new ArrayList<>();
 		for (String keyString : keyStringsToAttend) {
@@ -272,12 +270,10 @@ public class Endpoints {
 		}
 		return ofy().load().keys(keysListToAttend).values();
 	}
-	
-	
+
 	@ApiMethod(name = "unregisterFromGame", path = "game/{websafeGameKey}/registration", httpMethod = HttpMethod.DELETE)
-	public WrappedBoolean unregisterFromGame(final User user,
-			@Named("websafeGameKey") final String websafeGameKey)
-					throws UnauthorizedException, NotFoundException, ForbiddenException, ConflictException {
+	public WrappedBoolean unregisterFromGame(final User user, @Named("websafeGameKey") final String websafeGameKey)
+			throws UnauthorizedException, NotFoundException, ForbiddenException, ConflictException {
 		if (user == null) {
 			throw new UnauthorizedException("Authorization required");
 		}
@@ -317,5 +313,44 @@ public class Endpoints {
 			}
 		}
 		return result;
+	}
+
+	@ApiMethod(name = "queryGames1", path = "queryGames1", httpMethod = HttpMethod.POST)
+	public List queryGames1(GameQueryForm gameQueryForm) {
+		Iterable<Game> gameIterable = gameQueryForm.getQuery();
+		List<Game> result = new ArrayList<>(0);
+		List<Key<Profile>> organizersKeyList = new ArrayList<>(0);
+		for (Game game : gameIterable) {
+			organizersKeyList.add(Key.create(Profile.class, game.getOrganizerUserId()));
+			result.add(game);
+		}
+		//
+		ofy().load().keys(organizersKeyList);
+		return result;
+	}
+
+	//
+	@ApiMethod(name = "getConferencesCreated", path = "getConferencesCreated", httpMethod = HttpMethod.POST)
+	public List<Game> getGamesCreated(final User user) throws UnauthorizedException {
+		if (user == null) {
+			throw new UnauthorizedException("Authorization required");
+		}
+		String userId = user.getUserId();
+		Key<Profile> userKey = Key.create(Profile.class, userId);
+		return ofy().load().type(Game.class).ancestor(userKey).order("name").list();
+	}
+	
+	
+
+	public List<Game> filterPlayground() {
+		Query<Game> query = ofy().load().type(Game.class);
+
+		query = query.filter("sport =", "Футбол");
+
+		query = query.filter("month =", 4);
+
+		query = query.filter("maxAttendees >", 10).order("maxAttendees").order("name");
+
+		return query.list();
 	}
 }
