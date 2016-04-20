@@ -1,3 +1,8 @@
+html{
+	weight:100%;
+}
+
+
 /*TOP menu*/
 
 .navbar-custom {
@@ -44,10 +49,65 @@
 }
 
 /*GOOGLE MAPS ALL PLACES*/
-.allPlaces{
-	position:fixed;
-	height:600%;
-	width:100%;
+#googleMapAll{
+    height: 200%;
+    width:100%;
+    position:absolute;
+    margin-left:-90px;
+
+}
+#pip-panoAll{
+    height: 200px;
+    width: 100%;
+}
+
+/*filters*/
+.filters{
+	position:relative;
+	left:50%;
+	
+}
+.btn-sm{
+	border-radius:7px;
+	padding:5px;
+	color:#fff;
+	margin-top:15px;
+	margin-bottom:15px;
+	box-shadow: 0 5px 7px rgba(0, 0, 0, 0.19), 0 3px 4px rgba(0, 0, 0, 0.23);
+}
+.btn-sm:hover{
+	border-radius:7px;
+	padding:5px;
+	color:#fff;
+	margin-top:15px;
+	margin-bottom:15px;
+	 box-shadow: 0 20px 30px rgba(0, 0, 0, 0.19), 0 12px 12px rgba(0, 0, 0, 0.23);
+}
+#getGamesQueryButton{
+	background-color:rgba(218,165,32,1);
+	width:100px;
+	font-weight:bold;
+
+}
+#football{
+	background-color:rgba(178,34,34,1);
+	font-weight:bold;
+}
+#basketball{
+	background-color:#00796B;
+	font-weight:bold;
+}
+#volleyball{
+	background-color:#0097A7;
+	font-weight:bold;
+}
+#tennis{
+	background-color:#C2185B;
+	font-weight:bold;
+}
+#hockey{
+	background-color:#455A64;
+	font-weight:bold;
 }
 /*CARDS*/
 
@@ -120,7 +180,7 @@
 .well{
 	height:300px;
 }
-#wrapper {
+#buttonadd {
     position: fixed;
     left: 94%;
     top: 90%;
@@ -201,7 +261,7 @@
     right:0;
     left:50%;
     font-size:14px;
-    z-index:20;
+    z-index:100;
     margin-top:-120px;
 
     width:70%;
@@ -320,7 +380,6 @@
 
 /*Submit Button*/
 .btn {
-    border-radius: 0;
     text-transform: uppercase;
     font-family: Montserrat,"Helvetica Neue",Helvetica,Arial,sans-serif;
     font-weight: 400;
