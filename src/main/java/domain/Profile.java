@@ -1,6 +1,7 @@
 package domain;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import com.googlecode.objectify.annotation.Entity;
@@ -19,7 +20,8 @@ public class Profile {
 	int quantityOFGames;
 	
 	//в першій комірці зберізається кількість лайків для футбола в другій для волейболу і тд по ентіті спортс
-	int[] sportSkill;
+	HashMap<String, ArrayList<String>> likeSkill;
+ 	HashMap<String, ArrayList<String>> dislikeSkill;
 	private ArrayList<String> gamesKeysToAttend;
 	@Id
 	String userId;
@@ -32,15 +34,27 @@ public class Profile {
 		this.visitedGames=0;
 		this.unvisitedGames=0;
 		this.quantityOFGames=0;
-		this.sportSkill=new int[5];
+		this.likeSkill=new HashMap<String, ArrayList<String>>();
+		likeSkill.put(Sports.football, new ArrayList<String>());
+		likeSkill.put(Sports.basketball, new ArrayList<String>());
+		likeSkill.put(Sports.volleyball, new ArrayList<String>());
+		likeSkill.put(Sports.tennis, new ArrayList<String>());
+		likeSkill.put(Sports.hockey, new ArrayList<String>());
+		this.dislikeSkill=new HashMap<String, ArrayList<String>>();
+		dislikeSkill.put(Sports.football, new ArrayList<String>());
+		dislikeSkill.put(Sports.basketball, new ArrayList<String>());
+		dislikeSkill.put(Sports.volleyball, new ArrayList<String>());
+		dislikeSkill.put(Sports.tennis, new ArrayList<String>());
+		dislikeSkill.put(Sports.hockey, new ArrayList<String>());
 		this.gamesKeysToAttend = new ArrayList<String>();
 	}
 	
-	public void update(int[] sportSkill, int visitedGames, int unvisitedGames,int quantityOfGames){
+	public void update(HashMap<String, ArrayList<String>> likeSkill, HashMap<String, ArrayList<String>> dislikeSkill, int visitedGames, int unvisitedGames,int quantityOfGames){
 		this.visitedGames=visitedGames;
 		this.unvisitedGames=unvisitedGames;
 		this.quantityOFGames=quantityOfGames;
-		this.sportSkill=sportSkill.clone();
+		this.likeSkill=likeSkill;
+		this.dislikeSkill=dislikeSkill;
 	}
 	
 	// set user's new name
@@ -85,12 +99,31 @@ public class Profile {
 	}
 	
 	//
-	public void likeMySkill(Sports sport){
-		sportSkill[sport.ordinal()]++;
+	public void likeMySkill(String sport, String profileKey){
+		likeSkill.get(sport).add(profileKey);
+	}
+	public void removeLikeMySkill(String sport, String profileKey){
+		likeSkill.get(sport).remove(profileKey);
+	}
+	public HashMap<String, ArrayList<String>> getLikes() {
+		return likeSkill;
+	}
+	public int getNumOfLikes(String sport){
+		return likeSkill.get(sport).size();
 	}
 	
-	public int[] getSportSkills() {
-		return sportSkill;
+	
+	public void dislikeMySkill(String sport, String profileKey){
+		likeSkill.get(sport).add(profileKey);
+	}
+	public void removeDislikeMySkill(String sport, String profileKey){
+		likeSkill.get(sport).remove(profileKey);
+	}
+	public HashMap<String, ArrayList<String>> getDislikes() {
+		return dislikeSkill;
+	}
+	public int getNumOfDislikes(String sport){
+		return dislikeSkill.get(sport).size();
 	}
 	public void setAttendance(){
 		visitedGames++;
