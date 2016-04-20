@@ -14,6 +14,8 @@ import com.googlecode.objectify.annotation.Parent;
 
 import form.GameForm;
 import static service.OfyService.ofy;
+
+
 @Entity
 public class Game {
 	@Id
