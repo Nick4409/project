@@ -68,6 +68,10 @@ function placeMarkerAndPanTo(latLng, map) {
 
     var infowindow = new google.maps.InfoWindow();
 
+    if (marker && marker.setMap) {
+        marker.setMap(null);
+    }
+
     marker=new google.maps.Marker({
         position: latLng,
         map: map
