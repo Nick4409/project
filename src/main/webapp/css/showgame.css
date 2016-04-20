@@ -1,0 +1,112 @@
+/*TOP menu*/
+
+.navbar-custom {
+    background-color: #fff;
+    margin-bottom: 0;
+    border-bottom: 2px solid rgba(139, 0, 0, 0.9);
+    text-transform: uppercase;
+    font-weight: 500;
+    font-size: 24px;
+    font-family: Montserrat,"Helvetica Neue",Helvetica,Arial,sans-serif;
+
+}
+.navbar-custom li a {
+    backgrond-color:#fff;
+    color:rgba(139, 0, 0, 0.9);;
+    font-size:18px;
+    font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+
+.navbar-custom .nav li a {
+    -webkit-transition: background .3s ease-in-out;
+    -moz-transition: background .3s ease-in-out;
+    transition: background .3s ease-in-out;
+}
+.navbar-custom .nav li a:hover,
+.navbar-custom .nav li a:focus {
+    outline: 0;
+    font-size: 18px;
+    font-weight: 500;
+    background-color: rgba(139, 35, 35, 1);
+    color: #fff;
+}
+.navbar-custom .nav li a:focus,
+.navbar-custom .nav li a:active {
+    outline: 0;
+}
+.navbar-custom .nav li.active a {
+    background-color: rgba(255,255,255,.3);
+}
+.navbar-custom .nav li.active a:hover {
+    background-color: rgba(139,35,35,1);
+    color: #fff;
+}
+
+/*WRAPPER*/
+.wrapper{
+	position:relative;
+	
+}
+/*TEXT*/
+.label-info{
+	   background-color:rgb(47,79,79);
+	   color:#fff;
+	   font-size:35px;
+	   z-index:5;
+}
+.nameGameForm{
+	text-align:center;
+}
+.attrName{
+	font-size:25px;
+	font-weight:bold;
+	font-family: Montserrat,"Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+.attr{
+	font-size:20px;
+	font-family: Montserrat,"Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+/*SUBSCRIBE*/
+#subContainer{
+	margin-left:100px;
+}
+.btn {
+	border-radius:0px;
+    text-transform: uppercase;
+    font-family: Montserrat,"Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-weight: 400;
+    -webkit-transition: all .3s ease-in-out;
+    -moz-transition: all .3s ease-in-out;
+    transition: all .3s ease-in-out;
+    margin:10px;
+    padding:10px;
+
+}
+
+.btn-default {
+    border: 2px solid #A52A2A;
+    color: rgb(165,42,42);
+    background-color: transparent;
+
+}
+.btn-default:hover,
+.btn-default:focus {
+    border: 2px solid #A52A2A;
+    outline: 0;
+    color: #fff;
+    background-color: rgb(165,42,42);
+}
+.map-responsive{
+    overflow:hidden;
+    padding-bottom:70%;
+    margin-top:10px;
+    margin-left:0px;
+    position:relative;
+    height:0;
+}
+.map-responsive #googleMap{
+    height:70%;
+    width:100%;
+    position:absolute;
+}
+

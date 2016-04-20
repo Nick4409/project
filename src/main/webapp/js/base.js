@@ -24,7 +24,7 @@ google.devrel.samples.hello = google.devrel.samples.hello || {};
  * @type {string}
  */
 google.devrel.samples.hello.CLIENT_ID =
-    '1001315827289-em9jhbuphg99hnk98un4heo3ffhdi83m.apps.googleusercontent.com';
+    '40717604117-7rf257j3vi37p6ha3gttaji0te2j9rm7.apps.googleusercontent.com';
 
 /**
  * Scopes used by the application.
@@ -192,7 +192,7 @@ print = function(game, position){
 
 	//лінк в нєкуда update в сторінку гри
 	var action = document.createElement("a");
-	var gameLink="https://findteamtest.appspot.com/showgame.html?"+objStringifiedAndEncoded;
+	var gameLink="https://findteam-1284.appspot.com/showgame.html?"+objStringifiedAndEncoded;
 	action.setAttribute("href", gameLink);
 	action.setAttribute("class", "button button-linkbutton button-linkbutton-shadow");
 	action.setAttribute("id", "");
