@@ -14,12 +14,14 @@ import com.googlecode.objectify.annotation.Parent;
 
 import form.GameForm;
 import static service.OfyService.ofy;
+
+
 @Entity
 public class Game {
 	@Id
     public long id;
     
-	@Index
+// 	@Index Поки ніби не потрібен)
     public String name;
     
     public String description;
@@ -33,16 +35,16 @@ public class Game {
     @Index
     private long startDate;
     public String startDateStr;
-    @Index
+// 	@Index Поки ніби не потрібен)
     private long endDate;
     public String endDateStr;
     
     public double latitude;
     public double longitude;
-    
+    @Index
     public String sport;
 
-    @Index
+// 	@Index Поки ніби не потрібен)
     public int maxAttendees;
 
     @Index

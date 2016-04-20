@@ -464,7 +464,14 @@
 }
 
 #nextPage{
+<<<<<<< HEAD
 	position:fixed;
 	bottom:30px;
 	left:80%
+=======
+position:absolute;
+bottom:-50px;
+left:80%;
+vertical-align : bottom;
+>>>>>>> 550cc70702b819cdf36b071eb18f9660e0d50e5a
 }
