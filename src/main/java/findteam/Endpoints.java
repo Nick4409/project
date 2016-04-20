@@ -14,6 +14,7 @@ import com.google.appengine.api.taskqueue.TaskOptions;
 import com.google.appengine.api.users.User;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.Work;
+import com.googlecode.objectify.annotation.Entity;
 
 import domain.Game;
 import domain.Profile;
@@ -165,6 +166,8 @@ public class Endpoints {
 				.list();
 		return result;
 	}
+	
+	
 	
 	public static class WrappedBoolean {
 

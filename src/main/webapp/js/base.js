@@ -24,7 +24,7 @@ google.devrel.samples.hello = google.devrel.samples.hello || {};
  * @type {string}
  */
 google.devrel.samples.hello.CLIENT_ID =
-    '40717604117-7rf257j3vi37p6ha3gttaji0te2j9rm7.apps.googleusercontent.com';
+    '1001315827289-em9jhbuphg99hnk98un4heo3ffhdi83m.apps.googleusercontent.com';
 
 /**
  * Scopes used by the application.
@@ -118,6 +118,7 @@ google.devrel.samples.hello.init = function(apiRoot) {
       google.devrel.samples.hello.enableButtons();
       google.devrel.samples.hello.signin(true,
       google.devrel.samples.hello.userAuthed);
+      getGamesQueryButton();
     }
   }
 
@@ -150,7 +151,6 @@ getGamesQueryButton= function(){
 		        for (var i = 0; i < resp.items.length; i++) {
 		        	print(resp.items[i], i);
 		        }
-		        alert("END! Items: "+ resp.items.length);
 		    }
 			else{
 				alert("Smth went wrong! resp.code: "+resp.code);
@@ -159,6 +159,23 @@ getGamesQueryButton= function(){
 	);
 }
 print = function(game, position){
+	 var obj = {
+		 id: game.id,
+         name: game.name,
+         sport:game.sport,
+         description: game.description,
+         startDateStr: game.startDateStr,
+         endDateStr: game.endDateStr,
+         latitude: game.latitude,
+         longitude: game.longitude,
+         seatsAvailable: game.seatsAvailable,
+         maxAttendees: game.maxAttendees
+     },
+     objStringified = JSON.stringify(obj), 
+     objStringifiedAndEncoded = encodeURIComponent(objStringified);
+	 
+	
+	
 	var wrapperNode = document.createElement("div");
 	wrapperNode.setAttribute("class", "flip-card active-card");
 	//створення заголовку
@@ -173,9 +190,10 @@ print = function(game, position){
 	gameNameNode.appendChild(header);
 
 
-	//лінк в нєкуда
+	//лінк в нєкуда update в сторінку гри
 	var action = document.createElement("a");
-	action.setAttribute("href", "javascript:void(0)");
+	var gameLink="https://findteamtest.appspot.com/showgame.html?"+objStringifiedAndEncoded;
+	action.setAttribute("href", gameLink);
 	action.setAttribute("class", "button button-linkbutton button-linkbutton-shadow");
 	action.setAttribute("id", "");
 	var play= document.createElement("i");
@@ -211,3 +229,4 @@ google.devrel.samples.hello.getMeFromDatastore = function() {
 function alertInfo (response) {
 	alert(response.message);	
 }
+

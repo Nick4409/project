@@ -17,7 +17,7 @@ import static service.OfyService.ofy;
 @Entity
 public class Game {
 	@Id
-    private long id;
+    public long id;
     
 	@Index
     public String name;

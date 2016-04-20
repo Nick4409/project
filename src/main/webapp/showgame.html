@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+ <script src="js/showgame.js"></script>
+</head>
+<body>
+	<script>
+	var objStringifiedAndEncoded = location.search.substr(1), // substr(1) нужен, чтобы убрать знак вопроса из начала строки
+    objStringified = decodeURIComponent(objStringifiedAndEncoded),
+    obj = JSON.parse(objStringified);
+	inflateGame(obj);
+	</script>
+</body>
+</html>
