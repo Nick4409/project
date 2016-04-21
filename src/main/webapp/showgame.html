@@ -21,7 +21,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
     <script type="text/javascript" src="js/jquery.simplePagination.js"></script>
 </head>
-<body>
+<body onload="onloadFunc()">
  <nav class="navbar navbar-custom">
         <div class="container">
             <div class="navbar-right">
@@ -47,7 +47,7 @@
     obj = JSON.parse(objStringified);
 	inflateGame(obj);
 	</script>
-	<div class="map-responsive">
+	<div id="someid" class="map-responsive">
 	<div id="googleMap"></div>
 	</div> 
 	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB2ria8CU7GcJZRdZD0MeZOk5eZ0vTWFiw"></script> 

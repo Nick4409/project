@@ -67,6 +67,7 @@ function initMap() {
 ////
 
 var marker;
+var markersArray = [];
 function placeMarkerAndPanTo(latLng, map) {
 
     var infowindow = new google.maps.InfoWindow();
@@ -81,11 +82,24 @@ function placeMarkerAndPanTo(latLng, map) {
     });
 
     map.panTo(latLng);
+    markersArray.push(marker);
     marker.addListener('click', function() {
         infowindow.setContent(marker.position.toString());
         infowindow.open(map, marker);
+
     });
 
+
+    markersArray.push(marker);
+
+}
+
+//ФУНКЦІЯ, ЩО ВИДАЛЯЄ ВСІ МАРКЕРИ
+function clear() {
+    markersArray.forEach(function (marker) {
+        marker.setMap(null);
+    });
+    markersArray = [];
 }
 
 function getMarker(){

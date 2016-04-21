@@ -52,3 +52,18 @@ function inflateGame (game) {
 	
 	document.body.appendChild(wrapper);
 }
+
+function onloadFunc(){
+	var myLatLng = {lat: obj.latitude, lng: obj.longitude};
+		var thismap = new google.maps.Map(document.getElementById('someid'), {
+		    zoom: 14,
+		    center: myLatLng
+		});
+
+		var marker = new google.maps.Marker({
+			position: myLatLng,
+			map: thismap,
+			title: obj.name
+		});
+}
+
