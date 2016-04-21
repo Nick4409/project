@@ -1,18 +1,18 @@
 /*TOP menu*/
 
 .navbar-custom {
-    background-color: #fff;
+	border-radius:0px;
+	background-color:#00695C;;
     margin-bottom: 0;
-    border-bottom: 2px solid rgba(139, 0, 0, 0.9);
     text-transform: uppercase;
-    font-weight: 500;
-    font-size: 24px;
     font-family: Montserrat,"Helvetica Neue",Helvetica,Arial,sans-serif;
 
 }
 .navbar-custom li a {
-    backgrond-color:#fff;
-    color:rgba(139, 0, 0, 0.9);;
+	padding-top:15px;
+	padding-bottom:15px;
+	background-color:#00695C;
+    color:#fff;
     font-size:18px;
     font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;
 }
@@ -27,20 +27,19 @@
     outline: 0;
     font-size: 18px;
     font-weight: 500;
-    background-color: rgba(139, 35, 35, 1);
-    color: #fff;
+    background-color: rgba(0, 105, 92,0.7);
+    color:#fff;
 }
+
 .navbar-custom .nav li a:focus,
 .navbar-custom .nav li a:active {
     outline: 0;
 }
-.navbar-custom .nav li.active a {
-    background-color: rgba(255,255,255,.3);
+.navbar-custom .nav li.active a:hover{
+	 background-color: rgba(0, 105, 92,0.7);
+    color:#fff;
 }
-.navbar-custom .nav li.active a:hover {
-    background-color: rgba(139,35,35,1);
-    color: #fff;
-}
+
 
 /*WRAPPER*/
 .wrapper{
@@ -49,7 +48,7 @@
 }
 /*TEXT*/
 .label-info{
-	   background-color:rgb(47,79,79);
+	   	background-color:#00695C;
 	   color:#fff;
 	   font-size:35px;
 	   z-index:5;
