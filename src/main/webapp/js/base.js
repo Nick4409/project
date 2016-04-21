@@ -24,7 +24,7 @@ google.devrel.samples.hello = google.devrel.samples.hello || {};
  * @type {string}
  */
 google.devrel.samples.hello.CLIENT_ID =
-    '562207734306-0c49i3qj7vkva7me5m5l01odsj7kgo6m.apps.googleusercontent.com';
+    '1001315827289-em9jhbuphg99hnk98un4heo3ffhdi83m.apps.googleusercontent.com';
 
 /**
  * Scopes used by the application.
@@ -101,6 +101,9 @@ google.devrel.samples.hello.enableButtons = function() {
   document.getElementById('getGamesQueryButton').onclick = function() {
 	 getGamesQueryButton();
   }  
+  document.getElementById('football').onclick = function() {
+		 getFootballGamesQueryButton();
+  } 
 };
 
 /**
@@ -138,15 +141,14 @@ createGame = function() {
 	request.execute(alertInfo);
 }
 
-
-
-getGamesQueryButton= function(){
-	var request = gapi.client.endpoints.getAllGames().execute(
+getFootballGamesQueryButton= function(){
+	var request = gapi.client.endpoints.getFootballGames().execute(
 		
 		function(resp) {
 			if (!resp.code) {
 				page=1;
 				list = resp.items || [];
+				deleteCards();
 				paging(list, page);
 		    }
 			else{
@@ -155,22 +157,50 @@ getGamesQueryButton= function(){
 		}
 	);
 }
+deleteCards = function(){
+	var block = document.getElementById("gameNode");
+	for(var i=0; i<currentlast; i++){
+			block.removeChild(document.getElementById("number"+i));
+	}
+	if(block.hasChildNodes()){
+		block.removeChild(document.getElementById("nextPage"));
+	}
+}
+
+getGamesQueryButton= function(){
+	var request = gapi.client.endpoints.getAllGames().execute(
+		
+		function(resp) {
+			if (!resp.code) {
+				page=1;
+				list = resp.items || [];
+				deleteCards();
+				paging(list, page);
+		    }
+			else{
+				alert("Smth went wrong! resp.code: "+resp.code);
+			}
+		}
+	);
+}
+
+
 var list;
 var page;
 var currentlast;
-var onScreen="ALL";
+
 
 paging = function(list, page){
 	if(button!=null){
-	var button = document.getElementById("nextPage");
-	button.parentNode.removeNode(button);
+		var button = document.getElementById("nextPage");
+		button.parentNode.removeNode(button);
 	}
 	var last = 5*page;
 	var first = last-5;
 	if(last>list.length) last=list.length;
 	if(list.length>=first){
 		for(var i=first; i<last; i++ ){
-			print(list[i]);
+			print(list[i], i);
 		}
 	}
 	
@@ -178,7 +208,7 @@ paging = function(list, page){
 	if(list.length>currentlast) printNextButton();
 }
 
-print = function(game){
+print = function(game, number){
 	 var obj = {
 		 id: game.id,
          name: game.name,
@@ -198,6 +228,7 @@ print = function(game){
 	
 	var wrapperNode = document.createElement("div");
 	wrapperNode.setAttribute("class", "flip-card active-card");
+	wrapperNode.setAttribute("id", "number"+number);
 	//створення заголовку
 	var gameNameNode = document.createElement("div");
 	gameNameNode.setAttribute("class", "card label-info");
@@ -215,7 +246,7 @@ print = function(game){
 	var gameLink="https://findteamtest.appspot.com/showgame.html?"+objStringifiedAndEncoded;
 	action.setAttribute("href", gameLink);
 	action.setAttribute("class", "button button-linkbutton button-linkbutton-shadow");
-	action.setAttribute("id", "");
+	action.setAttribute("id", "card");
 	var play= document.createElement("i");
 	play.setAttribute("class","material-icons");
 	
