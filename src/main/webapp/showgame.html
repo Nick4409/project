@@ -2,55 +2,71 @@
 <html>
 <head>
 <meta charset="UTF-8">
-	<title>Insert title here</title>
-	 <script src="js/showgame.js"></script>
-	 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-	 <link type="text/css" rel="stylesheet" href="css/showgame.css">
-	 <!-- Custom Fonts -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" type="text/css">
-    <link href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css">
-    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
-    <link href='https://fonts.googleapis.com/css?family=Russo+One&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
-    <link href='https://fonts.googleapis.com/css?family=Comfortaa|Playfair+Display+SC&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
-	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <!--Calendar css-->
-    <link href="https://cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/d004434a5ff76e7b97c8b07c01f34ca69e635d97/build/css/bootstrap-datetimepicker.css" rel="stylesheet">
-    <script src="js/script.js"></script>
-    <script src="js/base.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-    <script type="text/javascript" src="js/jquery.simplePagination.js"></script>
+<title>Insert title here</title>
+<script src="js/showgame.js"></script>
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+<link type="text/css" rel="stylesheet" href="css/showgame.css">
+<!-- Custom Fonts -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css"
+	type="text/css">
+<link
+	href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic"
+	rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=Montserrat:400,700"
+	rel="stylesheet" type="text/css">
+<link
+	href='https://fonts.googleapis.com/css?family=Russo+One&subset=latin,cyrillic'
+	rel='stylesheet' type='text/css'>
+<link
+	href='https://fonts.googleapis.com/css?family=Comfortaa|Playfair+Display+SC&subset=latin,cyrillic'
+	rel='stylesheet' type='text/css'>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+	rel="stylesheet">
+<!--Calendar css-->
+<link
+	href="https://cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/d004434a5ff76e7b97c8b07c01f34ca69e635d97/build/css/bootstrap-datetimepicker.css"
+	rel="stylesheet">
+<script src="js/script.js"></script>
+<script src="js/base.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+<script type="text/javascript" src="js/jquery.simplePagination.js"></script>
+<script src="https://apis.google.com/js/client.js?onload=init"></script>
 </head>
-<body>
- <nav class="navbar navbar-custom">
-        <div class="container">
-            <div class="navbar-right">
-                <ul class="nav navbar-nav">
-                    <li class="hidden">
-                        <a href="#page-top"></a>
-                    </li>
-                    <li>
-                        <a class="page-scroll" id="userInfoButton" class="btn" href="javascript:void(0);">Мій профіль</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-    <div id="subContainer">
-    	<a href="javascript:void(0);" id="subscribe" class="btn btn-default btn-lg">Долучитися</a>
-		<a href="javascript:void(0);" id="unsubscribe" class="btn btn-default btn-lg">Відписатися</a>
+<body onload="enableButtons()">
+	<nav class="navbar navbar-custom">
+		<div class="container">
+			<div class="navbar-right">
+				<ul class="nav navbar-nav">
+					<li class="hidden"><a href="#page-top"></a></li>
+					<li><a class="page-scroll" id="userInfoButton" class="btn"
+						href="javascript:void(0);">Мій профіль</a></li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+	<div id="subContainer">
+		<a href="javascript:void(0);" id="subscribe"
+			class="btn btn-default btn-lg">Долучитися</a> <a
+			href="javascript:void(0);" id="unsubscribe"
+			class="btn btn-default btn-lg">Відписатися</a>
 	</div>
-	
+
 	<script>
-	var objStringifiedAndEncoded = location.search.substr(1), // substr(1) нужен, чтобы убрать знак вопроса из начала строки
-    objStringified = decodeURIComponent(objStringifiedAndEncoded),
-    obj = JSON.parse(objStringified);
-	inflateGame(obj);
+		var objStringifiedAndEncoded = location.search.substr(1), // substr(1) нужен, чтобы убрать знак вопроса из начала строки
+		objStringified = decodeURIComponent(objStringifiedAndEncoded), obj = JSON
+				.parse(objStringified);
+		inflateGame(obj);
 	</script>
 	<div class="map-responsive">
-	<div id="googleMap"></div>
-	</div> 
-	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB2ria8CU7GcJZRdZD0MeZOk5eZ0vTWFiw"></script> 
+		<div id="googleMap"></div>
+	</div>
+	<script
+		src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB2ria8CU7GcJZRdZD0MeZOk5eZ0vTWFiw"></script>
 	<script src="js/showgameMap.js"></script>
 </body>
 </html>

@@ -5,7 +5,7 @@ package findteam;
  */
 public class Constants {
 
-  public static final String WEB_CLIENT_ID ="40717604117-7rf257j3vi37p6ha3gttaji0te2j9rm7.apps.googleusercontent.com";
+  public static final String WEB_CLIENT_ID ="562207734306-0c49i3qj7vkva7me5m5l01odsj7kgo6m.apps.googleusercontent.com";
   public static final String ANDROID_CLIENT_ID = "replace this with your Android client ID";
   public static final String IOS_CLIENT_ID = "replace this with your iOS client ID";
   public static final String ANDROID_AUDIENCE = WEB_CLIENT_ID;
