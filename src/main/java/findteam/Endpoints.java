@@ -196,9 +196,9 @@ public class Endpoints {
 		}
 	}
 
-	@ApiMethod(name = "registerForGame", path = "game/{websafeGameKey}/registration", httpMethod = HttpMethod.POST)
+	@ApiMethod(name = "registerForGame", path = "registerForGame", httpMethod = HttpMethod.POST)
 
-	public WrappedBoolean registerForGame(final User user, @Named("websafeGameKey") final String websafeGameKey)
+	public WrappedBoolean registerForGame(final User user, @Named("id") final long id)
 			throws UnauthorizedException, NotFoundException, ForbiddenException, ConflictException {
 		if (user == null) {
 			throw new UnauthorizedException("Authorization required");
@@ -208,22 +208,24 @@ public class Endpoints {
 			@Override
 			public WrappedBoolean run() {
 				try {
-					Key<Game> gameKey = Key.create(websafeGameKey);
+					Key<Game> gameKey = Key.create(Game.class, id);
+					
+					String strId = gameKey.toString();
 
 					Game game = ofy().load().key(gameKey).now();
 
 					if (game == null) {
-						return new WrappedBoolean(false, "No Game found with key: " + websafeGameKey);
+						return new WrappedBoolean(false, "No Game found with id: " + id);
 					}
 
 					Profile profile = getProfile(user);
 
-					if (profile.getGamesKeysToAttend().contains(websafeGameKey)) {
+					if (profile.getGamesKeysToAttend().contains(strId)) {
 						return new WrappedBoolean(false, "Already registered");
 					} else if (game.getSeatsAvailable() <= 0) {
 						return new WrappedBoolean(false, "No seats available");
 					} else {
-						profile.addToGamesKeysToAttend(websafeGameKey);
+						profile.addToGamesKeysToAttend(strId);
 
 						game.bookSeats(1);
 
@@ -275,8 +277,8 @@ public class Endpoints {
 		return ofy().load().keys(keysListToAttend).values();
 	}
 
-	@ApiMethod(name = "unregisterFromGame", path = "game/{websafeGameKey}/registration", httpMethod = HttpMethod.DELETE)
-	public WrappedBoolean unregisterFromGame(final User user, @Named("websafeGameKey") final String websafeGameKey)
+	@ApiMethod(name = "unregisterFromGame", path = "unregisterFromGame", httpMethod = HttpMethod.DELETE)
+	public WrappedBoolean unregisterFromGame(final User user, @Named("id") final long id)
 			throws UnauthorizedException, NotFoundException, ForbiddenException, ConflictException {
 		if (user == null) {
 			throw new UnauthorizedException("Authorization required");
@@ -287,17 +289,18 @@ public class Endpoints {
 			public WrappedBoolean run() {
 				try {
 
-					Key<Game> gameKey = Key.create(websafeGameKey);
+					Key<Game> gameKey = Key.create(Game.class, id);
+					String strId = gameKey.toString();
 
 					Game game = ofy().load().key(gameKey).now();
 
 					if (game == null) {
-						return new WrappedBoolean(false, "No game found with key: " + websafeGameKey);
+						return new WrappedBoolean(false, "No game found with key: " + id);
 					}
 
 					Profile profile = getProfile(user);
 
-					profile.deleteFromGamesKeysToAttend(websafeGameKey);
+					profile.deleteFromGamesKeysToAttend(strId);
 
 					game.giveBackSeats(1);
 
@@ -421,4 +424,6 @@ public class Endpoints {
 				.filter("sport", "Хокей").order("startDate").list();
 		return result;
 	}
+	
+	
 }
