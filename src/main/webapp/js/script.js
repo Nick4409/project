@@ -1,12 +1,14 @@
 /**
  * Created by ostap on 16.04.2016.
  */
-function initMap() {
-    var map = new google.maps.Map(document.getElementById('googleMap'), {
-        center: {lat: 50.464379, lng: 30.519131},
-        zoom: 13
-    });
 
+
+function initMap() {
+	var map = new google.maps.Map(document.getElementById('googleMap'), {
+		 zoom: 12,
+		 center:{lat: 50.46655, lng: 30.5181692}
+	});
+	
     ////GEOLOCATING
     var input = document.getElementById('pac-input');
 
@@ -16,8 +18,9 @@ function initMap() {
     map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
 
     var infowindow = new google.maps.InfoWindow();
+	 
     var marker = new google.maps.Marker({
-        map: map
+    	map: map
     });
     marker.addListener('click', function() {
         infowindow.open(map, marker);
@@ -68,6 +71,10 @@ function placeMarkerAndPanTo(latLng, map) {
 
     var infowindow = new google.maps.InfoWindow();
 
+    if (marker && marker.setMap) {
+        marker.setMap(null);
+    }
+
     marker=new google.maps.Marker({
         position: latLng,
         map: map
@@ -81,9 +88,6 @@ function placeMarkerAndPanTo(latLng, map) {
 
 }
 
-function getMarkersLat(){
-    return  marker.position.lat;
-}
-function getMarkersLng(){
-    return  marker.position.lng;
+function getMarker(){
+    return  marker.position.toString();
 }

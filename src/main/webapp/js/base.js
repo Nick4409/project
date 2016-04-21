@@ -24,7 +24,9 @@ google.devrel.samples.hello = google.devrel.samples.hello || {};
  * @type {string}
  */
 google.devrel.samples.hello.CLIENT_ID =
+
     '1001315827289-em9jhbuphg99hnk98un4heo3ffhdi83m.apps.googleusercontent.com';
+
 
 /**
  * Scopes used by the application.
@@ -104,6 +106,18 @@ google.devrel.samples.hello.enableButtons = function() {
   document.getElementById('football').onclick = function() {
 		 getFootballGamesQueryButton();
   } 
+  document.getElementById('basketball').onclick = function() {
+		 getBasketballGamesQueryButton();
+  } 
+  document.getElementById('volleyball').onclick = function() {
+		 getVolleyballGamesQueryButton();
+  } 
+  document.getElementById('tennis').onclick = function() {
+		 getTennisGamesQueryButton();
+  } 
+  document.getElementById('hockey').onclick = function() {
+		 getHockeyGamesQueryButton();
+  } 
 };
 
 /**
@@ -135,12 +149,94 @@ createGame = function() {
 	var startDate =$("#datetimepicker6").find("input").val();
     var endDate =$("#datetimepicker7").find("input").val();
 	var attendees =document.getElementById("attendees").value;
-	alert("End Date: "+endDate+"\n"+"Start Date: "+startDate);
+	var marker = getMarker();
+	alert(marker);
 	var request =  gapi.client.endpoints.createGame({'name': name, 'description':description, 'maxAttendees':attendees,
-		'seatsAvailable':attendees, 'startDateStr':startDate, 'endDateStr':endDate, 'latitude':0, 'longitude':0, 'sport':sport});
+		'seatsAvailable':attendees, 'startDateStr':startDate, 'endDateStr':endDate, 'marker':marker, 'sport':sport});
 	request.execute(alertInfo);
 }
 
+getVolleyballGamesQueryButton= function(){
+	var request = gapi.client.endpoints.getVolleyballGames().execute(
+		
+		function(resp) {
+			if (!resp.code) {
+				page=1;
+				list = resp.items || [];
+				deleteCards();
+				paging(list, page);
+		    }
+			else{
+				alert("Smth went wrong! resp.code: "+resp.code);
+			}
+		}
+	);
+}
+getTennisGamesQueryButton= function(){
+	var request = gapi.client.endpoints.getTennisGames().execute(
+		
+		function(resp) {
+			if (!resp.code) {
+				page=1;
+				list = resp.items || [];
+				deleteCards();
+				paging(list, page);
+		    }
+			else{
+				alert("Smth went wrong! resp.code: "+resp.code);
+			}
+		}
+	);
+}
+getHockeyGamesQueryButton= function(){
+	var request = gapi.client.endpoints.getHockeyGames().execute(
+		
+		function(resp) {
+			if (!resp.code) {
+				page=1;
+				list = resp.items || [];
+				deleteCards();
+				paging(list, page);
+		    }
+			else{
+				alert("Smth went wrong! resp.code: "+resp.code);
+			}
+		}
+	);
+}
+
+getBasketballGamesQueryButton= function(){
+	var request = gapi.client.endpoints.getBasketballGames().execute(
+		
+		function(resp) {
+			if (!resp.code) {
+				page=1;
+				list = resp.items || [];
+				deleteCards();
+				paging(list, page);
+		    }
+			else{
+				alert("Smth went wrong! resp.code: "+resp.code);
+			}
+		}
+	);
+}
+getBasketballGamesQueryButton= function(){
+	var request = gapi.client.endpoints.getBasketballGames().execute(
+		
+		function(resp) {
+			if (!resp.code) {
+				page=1;
+				list = resp.items || [];
+				deleteCards();
+				paging(list, page);
+		    }
+			else{
+				alert("Smth went wrong! resp.code: "+resp.code);
+			}
+		}
+	);
+}
 getFootballGamesQueryButton= function(){
 	var request = gapi.client.endpoints.getFootballGames().execute(
 		
@@ -203,9 +299,37 @@ paging = function(list, page){
 			print(list[i], i);
 		}
 	}
-	
+	printMarkers(gamesArray);
 	currentlast=last;
 	if(list.length>currentlast) printNextButton();
+}
+
+
+var gamesArray = new Array();
+function addListeners(marker){
+google.maps.event.addListener(marker, 'click', function() {
+	document.location.href = marker.url;
+});
+}
+function printMarkers(gamesArray){
+	mymap= new google.maps.Map(document.getElementById('googleMapAll'), {
+		 zoom: 12,
+		 center:{lat: 50.46655, lng: 30.5181692}
+	});
+	for(var i=0; i<gamesArray.length; i++){
+	
+		var gameStringifiedAndEncoded = gamesArray[i]; 
+		var gameStringified = decodeURIComponent(gameStringifiedAndEncoded);
+		var game = JSON.parse(gameStringified);
+		
+		var myMarker = new google.maps.Marker({
+			position: {lat: game.latitude, lng: game.longitude},
+			map: mymap,
+			title: game.name,
+			url:"https://findteamtest.appspot.com/showgame.html?"+gameStringifiedAndEncoded
+		});
+		addListeners(myMarker);
+	}
 }
 
 print = function(game, number){
@@ -223,7 +347,8 @@ print = function(game, number){
      },
      objStringified = JSON.stringify(obj), 
      objStringifiedAndEncoded = encodeURIComponent(objStringified);
-	 
+	
+	gamesArray.push(objStringifiedAndEncoded);
 	
 	
 	var wrapperNode = document.createElement("div");

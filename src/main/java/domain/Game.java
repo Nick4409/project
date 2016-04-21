@@ -2,6 +2,7 @@
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.StringTokenizer;
 
 import com.google.api.server.spi.config.AnnotationBoolean;
 import com.google.api.server.spi.config.ApiResourceProperty;
@@ -21,7 +22,7 @@ public class Game {
 	@Id
     public long id;
     
-	@Index
+// 	@Index Поки ніби не потрібен)
     public String name;
     
     public String description;
@@ -35,7 +36,7 @@ public class Game {
     @Index
     private long startDate;
     public String startDateStr;
-    @Index
+// 	@Index Поки ніби не потрібен)
     private long endDate;
     public String endDateStr;
     
@@ -44,7 +45,7 @@ public class Game {
     @Index
     public String sport;
 
-    @Index
+// 	@Index Поки ніби не потрібен)
     public int maxAttendees;
 
     @Index
@@ -85,9 +86,17 @@ public class Game {
         
         this.maxAttendees = gameForm.getMaxAttendees();
         this.seatsAvailable = this.maxAttendees - seatsAllocated;
-        this.latitude=gameForm.getLatitude();
-        this.longitude=gameForm.getLongtitude();
+        setLngLat(gameForm.getMarker());
         this.cancelable=gameForm.getCancelable();
+    }
+    
+    public void setLngLat(String marker){
+    	if(marker.length()>5){
+    		StringTokenizer st = new StringTokenizer(marker, "() ,");
+    		latitude = Double.parseDouble(st.nextToken());
+    		longitude = Double.parseDouble(st.nextToken());
+    	}
+    	else throw new NullPointerException("Ви б позначили б місце на карті, бо якось нєхорошо виходить");
     }
     
     public void bookSeats(final int number) {

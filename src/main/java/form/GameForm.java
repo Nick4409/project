@@ -2,6 +2,7 @@ package form;
 
 import java.util.Date;
 import java.util.Scanner;
+import java.util.StringTokenizer;
 
 public class GameForm {
 	
@@ -20,8 +21,7 @@ public class GameForm {
     //найменування спорту
     public String sport;
     
-    public double latitude;
-    public double longitude;
+    public String marker;
     
     public boolean cancelable;
     
@@ -29,7 +29,7 @@ public class GameForm {
     private GameForm() {}
 	
     public GameForm(String name, String description, String startDateStr, String endDateStr, String sport,   
-    			int maxAttendees, int seatsAvailable, double latitude, double longitude, boolean cancelable) {
+    			int maxAttendees, int seatsAvailable, String marker, boolean cancelable) {
 		this.name=name;
 		this.description=description;
 		this.sport=sport;
@@ -37,12 +37,13 @@ public class GameForm {
 		this.endDateStr=endDateStr;
 		this.maxAttendees=maxAttendees;
 		this.seatsAvailable=seatsAvailable;
-		this.latitude=latitude;
-		this.longitude=longitude;
+		this.marker=marker;
 		this.cancelable=cancelable;
 		this.startDate=createDate(startDateStr);
 		this.endDate=createDate(endDateStr);
 	}
+    
+    
     
     public long createDate(String dateStr){
     	int month=Integer.parseInt(dateStr.substring(0, 2));
@@ -69,7 +70,9 @@ public class GameForm {
     public String getName() {
         return name;
     }
-
+    public String getMarker() {
+        return marker;
+    }
     public String getDescription() {
         return description;
     }
@@ -90,13 +93,7 @@ public class GameForm {
         return seatsAvailable;
     }
     
-    public double getLatitude() {
-        return latitude;
-    }
-    
-    public double getLongtitude() {
-        return longitude;
-    }
+  
     
     public boolean getCancelable() {
         return cancelable;
