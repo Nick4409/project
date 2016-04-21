@@ -1,20 +1,22 @@
-
+body{
+	background-color:rgba(224,224,224, 0.8);
+	overflow-x:hidden;
+}
 /*TOP menu*/
 
 .navbar-custom {
-    background-color: #fff;
+	border-radius:0px;
+	background-color:#00695C;;
     margin-bottom: 0;
-    margin-right:-100px;
-    border-bottom: 2px solid rgba(139, 0, 0, 0.9);
     text-transform: uppercase;
-    font-weight: 500;
-    font-size: 24px;
     font-family: Montserrat,"Helvetica Neue",Helvetica,Arial,sans-serif;
 
 }
 .navbar-custom li a {
-    backgrond-color:#fff;
-    color:rgba(139, 0, 0, 0.9);;
+	padding-top:15px;
+	padding-bottom:15px;
+	background-color:#00695C;;
+    color:#fff;
     font-size:18px;
     font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;
 }
@@ -29,20 +31,19 @@
     outline: 0;
     font-size: 18px;
     font-weight: 500;
-    background-color: rgba(139, 35, 35, 1);
-    color: #fff;
+    background-color: rgba(0, 105, 92,0.7);
+    color:#fff;
 }
+
 .navbar-custom .nav li a:focus,
 .navbar-custom .nav li a:active {
     outline: 0;
 }
-.navbar-custom .nav li.active a {
-    background-color: rgba(255,255,255,.3);
+.navbar-custom .nav li.active a:hover{
+	 background-color: rgba(0, 105, 92,0.7);
+    color:#fff;
 }
-.navbar-custom .nav li.active a:hover {
-    background-color: rgba(139,35,35,1);
-    color: #fff;
-}
+
 
 /*GOOGLE MAPS ALL PLACES*/
 #googleMapAll{
@@ -63,6 +64,7 @@
 	left:50%;
 	
 }
+
 .btn-sm{
 	border-radius:7px;
 	padding:5px;
@@ -71,46 +73,99 @@
 	margin-bottom:15px;
 	box-shadow: 0 5px 7px rgba(0, 0, 0, 0.19), 0 3px 4px rgba(0, 0, 0, 0.23);
 }
-.btn-sm:hover, .btn-sm:active{
+.btn-sm:hover{
+	background-color: rgba(139, 0, 0, 1);
 	border-radius:7px;
 	padding:5px;
 	color:#fff;
 	margin-top:15px;
 	margin-bottom:15px;
-	 box-shadow: 0 20px 30px rgba(0, 0, 0, 0.19), 0 12px 12px rgba(0, 0, 0, 0.23);
+	box-shadow: 0 20px 30px rgba(0, 0, 0, 0.19), 0 12px 12px rgba(0, 0, 0, 0.23);
 }
 #getGamesQueryButton{
-	background-color:#004D40;
+	background-color:rgb(47,79,79);
 	width:100px;
 	font-weight:bold;
 
 }
+
+#getGamesQueryButton:active,
+#getGamesQueryButton:focus,
+#getGamesQueryButton:hover{
+	background-color: rgba(139, 0, 0, 1) !important;
+	color:#fff;
+	box-shadow: 0 20px 30px rgba(0, 0, 0, 0.19), 0 12px 12px rgba(0, 0, 0, 0.23);
+}
 #football{
-	background-color:#00796B;
+	background-color:rgb(47,79,79);
 	font-weight:bold;
+}
+#football:active,
+#football:focus,
+#football:hover{
+	background-color: rgba(139, 0, 0, 1) !important;
+	color:#fff;
+	box-shadow: 0 20px 30px rgba(0, 0, 0, 0.19), 0 12px 12px rgba(0, 0, 0, 0.23);
 }
 #basketball{
-	background-color:#4DB6AC;
+	background-color:rgb(47,79,79);
 	font-weight:bold;
+}
+#basketball:active,
+#basketball:focus,
+#basketball:hover{
+	background-color: rgba(139, 0, 0, 1) !important;
+	color:#fff;
+	box-shadow: 0 20px 30px rgba(0, 0, 0, 0.19), 0 12px 12px rgba(0, 0, 0, 0.23);
 }
 #volleyball{
-	background-color:#607D8B;
+	background-color:rgb(47,79,79);
 	font-weight:bold;
+}
+#volleyball:active,
+#volleyball:focus,
+#volleyball:hover{
+	background-color: rgba(139, 0, 0, 1) !important;
+	color:#fff;
+	box-shadow: 0 20px 30px rgba(0, 0, 0, 0.19), 0 12px 12px rgba(0, 0, 0, 0.23);
 }
 #tennis{
-	background-color:#727272;
+	background-color:rgb(47,79,79);
 	font-weight:bold;
+}
+#tennis:active,
+#tennis:focus,
+#tennis:hover{
+	background-color: rgba(139, 0, 0, 1) !important;
+	color:#fff;
+	box-shadow: 0 20px 30px rgba(0, 0, 0, 0.19), 0 12px 12px rgba(0, 0, 0, 0.23);
 }
 #hockey{
-	background-color:#009688;
+	background-color:rgb(47,79,79);
 	font-weight:bold;
 }
+#hockey:active,
+#hockey:focus,
+#hockey:hover{
+	background-color: rgba(139, 0, 0, 1) !important;
+	color:#fff;
+	box-shadow: 0 20px 30px rgba(0, 0, 0, 0.19), 0 12px 12px rgba(0, 0, 0, 0.23);
+}
 /*CARDS*/
-
+.attrName{
+	font-size:25px;
+	font-weight:bold;
+	font-family: Montserrat,"Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+.attr{
+	font-size:20px;
+	font-family: Montserrat,"Helvetica Neue",Helvetica,Arial,sans-serif;
+}
 #gameNode{
 	position:absolute;
 	top:50%;
 	left:50%;
+	width:600px;
 }
 .card {
     width: 100%;
@@ -169,7 +224,7 @@
 
 
 .label-info{
-	   background-color:rgb(47,79,79);
+	   background-color:#00695C;
 	   color:#fff;
 	   z-index:5;
 }
@@ -251,7 +306,9 @@
 .overlay:target {
     display: block;
 }
-
+#sendFormButton{
+	border-radius:0px;
+	}
 .popup{
     overflow:hidden;
     right:0;
@@ -461,17 +518,4 @@
 
 .controls:focus {
     border-color: #4d90fe;
-}
-
-#nextPage{
-<<<<<<< HEAD
-	position:fixed;
-	bottom:30px;
-	left:80%
-=======
-position:absolute;
-bottom:-50px;
-left:80%;
-vertical-align : bottom;
->>>>>>> 550cc70702b819cdf36b071eb18f9660e0d50e5a
 }
