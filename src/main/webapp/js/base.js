@@ -24,11 +24,8 @@ google.devrel.samples.hello = google.devrel.samples.hello || {};
  * @type {string}
  */
 google.devrel.samples.hello.CLIENT_ID =
-<<<<<<< HEAD
     '40717604117-7rf257j3vi37p6ha3gttaji0te2j9rm7.apps.googleusercontent.com';
-=======
-    '562207734306-0c49i3qj7vkva7me5m5l01odsj7kgo6m.apps.googleusercontent.com';
->>>>>>> 550cc70702b819cdf36b071eb18f9660e0d50e5a
+
 
 /**
  * Scopes used by the application.
@@ -231,12 +228,43 @@ print = function(game){
 	var header = document.createElement("text");
 	header.setAttribute("class", "cardGameDiscription");
 
+	
+	var descriptionDiv = document.createElement("div");
+	descriptionDiv.setAttribute("class", "attr descriptionGameForm");
+	descriptionDiv.innerHTML="<text class='attrName'>Опис: </text>";
+	var description = document.createTextNode(game.description);
+	descriptionDiv.appendChild(description);
+	header.appendChild(descriptionDiv);
+	
+	var sportDiv = document.createElement("div");
+	sportDiv.setAttribute("class", "attr sportGameForm");
+	sportDiv.innerHTML="<text class='attrName'>Вид спорту: </text>";
+	var sport = document.createTextNode(game.sport);
+	sportDiv.appendChild(sport);
+	header.appendChild(sportDiv);
+	
+	var visitorsDiv = document.createElement("div");
+	visitorsDiv.setAttribute("class", "attr visitorsGameForm");
+	visitorsDiv.innerHTML="<text class='attrName'>Кількість відвідувачів: </text>";
 	var places = game.maxAttendees-game.seatsAvailable;
-	var description = document.createTextNode("Sport: "+game.sport+"\n"+"Game description: "+game.description+"\n"+
-	"Start date: "+game.startDateStr+"\n"+"End date: "+game.endDateStr+"\n"
-	+"Visitors: "+places+"/"+game.maxAttendees);
-
-	header.appendChild(description);
+	var visitors = document.createTextNode(places+"/"+game.maxAttendees);
+	visitorsDiv.appendChild(visitors);
+	header.appendChild(visitorsDiv);
+	
+	var startDateDiv = document.createElement("div");
+	startDateDiv.setAttribute("class", "attr startDateGameForm");
+	startDateDiv.innerHTML="<text class='attrName'>Дата початку: </text>";
+	var startDate = document.createTextNode(game.startDateStr);
+	startDateDiv.appendChild(startDate);
+	header.appendChild(startDateDiv);
+	
+	var endDateDiv = document.createElement("div");
+	endDateDiv.setAttribute("class", "attr endDateGameForm");
+	endDateDiv.innerHTML="<text class='attrName'>Дата завершення: </text>";
+	var endDate = document.createTextNode(game.endDateStr);
+	endDateDiv.appendChild(endDate);
+	header.appendChild(endDateDiv);
+	
 	gameBodyNode.appendChild(header);
 
 	wrapperNode.appendChild(gameNameNode);
