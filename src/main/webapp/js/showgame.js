@@ -1,3 +1,4 @@
+
 function inflateGame(game) {
 	var wrapper = document.createElement("div");
 	wrapper.setAttribute("id", "wrapper");
@@ -67,17 +68,4 @@ function onloadFunc(){
 
 
 
-
-enableButtons = function() {
-	document.getElementById('subscribe').onclick = function() {
-		registerForGame();
-	}
-	document.getElementById('unsubscribe').onclick = function() {
-		unregisterFromGame();
-	}
-
-	function alertInfo(response) {
-		alert(response.message);
-	}
-};
 

@@ -57,12 +57,36 @@
     	<a href="javascript:void(0);" id="subscribe" class="btn btn-default btn-lg">Долучитися</a>
 		<a href="javascript:void(0);" id="unsubscribe" class="btn btn-default btn-lg">Відписатися</a>
 	</div>
+	<div class="container">
+    <script type="text/javascript">
+        function init() {
+        	 var apisToLoad;
+        	  var callback = function() {
+        	    if (--apisToLoad == 0) {
+        	      google.devrel.samples.hello.signin(true,
+        	      google.devrel.samples.hello.userAuthed);
+        	      
+        	    }
+        	  }
 
+        	  apisToLoad = 2; // must match number of calls to gapi.client.load()
+        	  gapi.client.load('endpoints', 'v1', callback, '//' + window.location.host + '/_ah/api');
+        	  gapi.client.load('oauth2', 'v2', callback);;
+        }
+    </script>
+    <script src="https://apis.google.com/js/client.js?onload=init"></script>
+</div>
 	<script>
-		var objStringifiedAndEncoded = location.search.substr(1), // substr(1) нужен, чтобы убрать знак вопроса из начала строки
-		objStringified = decodeURIComponent(objStringifiedAndEncoded), obj = JSON
-				.parse(objStringified);
+		var objStringifiedAndEncoded = location.search.substr(1), 
+		objStringified = decodeURIComponent(objStringifiedAndEncoded), 
+		obj = JSON.parse(objStringified);
 		inflateGame(obj);
+		document.getElementById('subscribe').onclick = function(obj) {
+			registerForGame(obj.id);
+		}
+		document.getElementById('unsubscribe').onclick = function(obj) {
+			unregisterFromGame(obj.id);
+		}
 	</script>
 
 	<div id="someid" class="map-responsive">

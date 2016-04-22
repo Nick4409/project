@@ -13,7 +13,15 @@
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>index.html</welcome-file>
+        <welcome-file>showgame.html</welcome-file>
     </welcome-file-list>
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>all</web-resource-name>
+            <url-pattern>/*</url-pattern>
+        </web-resource-collection>
+       
+    </security-constraint>
     <servlet>
 		<servlet-name>SendGameCreatedServlet</servlet-name>
 		<servlet-class>servlet.SendGameCreatedServlet</servlet-class>
